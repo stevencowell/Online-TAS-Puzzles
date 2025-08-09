@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stage 4/5 Timber & Metal Technology — Interactive Busywork Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root{--accent:#1565c0;--ok:#2e7d32;--warn:#ef6c00;--err:#c62828;--bg:#f5f7fa}
+    *{box-sizing:border-box}
+    body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);margin:0;color:#212121}
+    header{background:#0d47a1;color:#fff;padding:14px 18px}
+    h1{margin:0;font-size:1.4rem}
+    main{padding:16px}
+    .intro{background:#fff;border:1px solid #ccd;border-radius:8px;padding:12px;margin-bottom:14px}
+    .muted{color:#666}
+    .pill{display:inline-block;padding:3px 10px;border-radius:999px;background:#e3f2fd;color:#0d47a1;margin:2px 4px}
+    nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    nav button{padding:8px 12px;border:none;border-radius:6px;background:#e0e0e0;color:#000;cursor:pointer}
+    nav button.active{background:var(--accent);color:#fff}
+    section.module{display:none}
+    section.module.active{display:block}
+    .question{background:#fff;border:1px solid #ccd;margin:12px 0;padding:16px;border-radius:8px}
+    .question h2{margin:0 0 8px;font-size:1.05rem}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .drag{display:inline-block;padding:6px 10px;margin:4px;border:1px dashed #999;border-radius:4px;background:#fafafa;cursor:move}
+    .drop{display:inline-block;min-width:160px;min-height:36px;padding:6px 10px;margin:4px;border:1px dashed #999;border-radius:4px;background:#fcfcfc}
+    .drop.multiple{min-height:56px}
+    .item{background:#e0e0e0;border-radius:4px;margin:2px 4px;padding:2px 6px;display:inline-block}
+    ul.sortable{padding:0;margin:0}
+    ul.sortable li{list-style:none;padding:6px 10px;margin:4px 0;border:1px solid #999;background:#eee;cursor:move;border-radius:4px}
+    .svgbox{position:relative;display:inline-block;border:1px solid #999}
+    .hot{position:absolute;border:2px solid rgba(255,0,0,.6);pointer-events:none;display:none}
+    table{border-collapse:collapse;width:100%}
+    th,td{border:1px solid #ccd;padding:6px;text-align:center}
+    .stars .star{font-size:20px;cursor:pointer;color:#bbb}
+    .stars .star.on{color:#ff9800}
+    .grid{display:grid;gap:4px}
+    .grid.cell-6{grid-template-columns:repeat(6,1fr)}
+    .cell{height:34px;border:1px solid #999;border-radius:4px;background:#fff;cursor:pointer}
+    .cell.sel{background:#90caf9}
+    .btn{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:8px 14px;cursor:pointer}
+    .right{color:var(--ok)} .wrong{color:var(--err)}
+    .hint{background:#fff3cd;border:1px solid #ffeeba;border-radius:4px;padding:8px;margin-top:8px}
+    @media (max-width:700px){.drop{display:block;width:100%}}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Stage 4/5 Timber & Metal Technology — Interactive Busywork Hub</h1>
+</header>
+<main>
+  <div class="intro">
+    <p class="muted">Pick a module below. Each has quick, self‑checking tasks across Safety, Tools, Processes, Measurement, Materials & Finishes. Use the Submit button at the end to collect your responses (see browser console for JSON). You can also open the extended safety bank.</p>
+    <p>
+      <a href="./ben_safety_quiz.html" target="_blank" class="pill">Open Ben’s Workshop Safety — Mega Interactive Quiz</a>
+    </p>
+  </div>
+
+  <nav id="nav">
+    <button data-target="mSafety" class="active">Safety</button>
+    <button data-target="mTools">Tools</button>
+    <button data-target="mProcess">Processes & Measurement</button>
+    <button data-target="mMaterials">Materials & Finishes</button>
+  </nav>
+
+  <!-- SAFETY MODULE -->
+  <section id="mSafety" class="module active">
+    <div class="question" id="s1">
+      <h2>S1 · Multiple‑choice</h2>
+      <p>Which item MUST be worn when grinding metal?</p>
+      <label><input type="radio" name="s1" value="Safety glasses"> Safety glasses</label><br>
+      <label><input type="radio" name="s1" value="Apron"> Apron</label><br>
+      <label><input type="radio" name="s1" value="Paint mask"> Paint mask</label>
+    </div>
+
+    <div class="question" id="s2">
+      <h2>S2 · True/False</h2>
+      <p>Leaving tools on the floor creates a trip hazard.</p>
+      <label><input type="radio" name="s2" value="True"> True</label>
+      <label><input type="radio" name="s2" value="False"> False</label>
+    </div>
+
+    <div class="question" id="s3">
+      <h2>S3 · Drag‑match hazards → controls</h2>
+      <div>
+        <span class="drag" draggable="true" data-val="Eye injury">Eye injury</span>
+        <span class="drag" draggable="true" data-val="Hearing damage">Hearing damage</span>
+        <span class="drag" draggable="true" data-val="Workpiece slips">Workpiece slips</span>
+        <span class="drag" draggable="true" data-val="Trip hazard">Trip hazard</span>
+      </div>
+      <div class="row">
+        <div class="drop" data-accept="Eye injury">Wear safety glasses</div>
+        <div class="drop" data-accept="Hearing damage">Use ear protection</div>
+        <div class="drop" data-accept="Workpiece slips">Clamp in a vice</div>
+        <div class="drop" data-accept="Trip hazard">Tidy tools and floor</div>
+      </div>
+    </div>
+
+    <div class="question" id="s4">
+      <h2>S4 · Image hotspot (click hazard areas)</h2>
+      <div class="svgbox">
+        <svg id="s4svg" width="340" height="220">
+          <rect x="0" y="0" width="340" height="220" fill="#fafafa" />
+          <rect x="25" y="150" width="90" height="40" fill="#c8e6c9"/>
+          <rect x="230" y="60" width="70" height="30" fill="#ffcdd2"/>
+          <text x="20" y="146" font-size="12">Bench</text>
+          <text x="226" y="56" font-size="12">Loose tools</text>
+        </svg>
+        <div id="s4hot" class="hot"></div>
+      </div>
+      <div class="muted">Click where you think a hazard exists.</div>
+    </div>
+
+    <div class="question" id="s5">
+      <h2>S5 · PPE checklist</h2>
+      <label><input type="checkbox" class="s5" data-tag="Glasses"> Safety glasses</label><br>
+      <label><input type="checkbox" class="s5" data-tag="Ear muffs"> Ear muffs</label><br>
+      <label><input type="checkbox" class="s5" data-tag="Face shield"> Face shield (grinding)</label><br>
+      <label><input type="checkbox" class="s5" data-tag="Gloves"> Gloves (handling sheet metal)</label>
+    </div>
+  </section>
+
+  <!-- TOOLS MODULE -->
+  <section id="mTools" class="module">
+    <div class="question" id="t1">
+      <h2>T1 · Drag‑match tools → function</h2>
+      <div>
+        <span class="drag" draggable="true" data-val="Try square">Try square</span>
+        <span class="drag" draggable="true" data-val="Scriber">Scriber</span>
+        <span class="drag" draggable="true" data-val="Hacksaw">Hacksaw</span>
+        <span class="drag" draggable="true" data-val="Drill press">Drill press</span>
+      </div>
+      <div class="row">
+        <div class="drop" data-accept="Try square">Check 90°</div>
+        <div class="drop" data-accept="Scriber">Mark metal</div>
+        <div class="drop" data-accept="Hacksaw">Cut metal</div>
+        <div class="drop" data-accept="Drill press">Drill holes</div>
+      </div>
+    </div>
+
+    <div class="question" id="t2">
+      <h2>T2 · Label the drill press</h2>
+      <div>
+        <span class="drag" draggable="true" data-val="Guard">Guard</span>
+        <span class="drag" draggable="true" data-val="Chuck">Chuck</span>
+        <span class="drag" draggable="true" data-val="Table">Table</span>
+      </div>
+      <div class="svgbox">
+        <svg width="360" height="220">
+          <rect x="0" y="0" width="360" height="220" fill="#fff"/>
+          <rect x="60" y="160" width="140" height="18" fill="#cfd8dc"/><!-- table -->
+          <rect x="190" y="60" width="50" height="20" fill="#e1bee7"/><!-- guard -->
+          <circle cx="180" cy="120" r="10" fill="#90caf9"/><!-- chuck -->
+        </svg>
+        <div class="drop" data-accept="Table" style="position:absolute;left:80px;top:178px;width:120px">Drop: Table</div>
+        <div class="drop" data-accept="Guard" style="position:absolute;left:200px;top:76px;width:120px">Drop: Guard</div>
+        <div class="drop" data-accept="Chuck" style="position:absolute;left:160px;top:132px;width:120px">Drop: Chuck</div>
+      </div>
+    </div>
+
+    <div class="question" id="t3">
+      <h2>T3 · Card sort: Timber vs Metal vs Both</h2>
+      <div>
+        <span class="drag" draggable="true" data-val="Try square">Try square</span>
+        <span class="drag" draggable="true" data-val="Hacksaw">Hacksaw</span>
+        <span class="drag" draggable="true" data-val="Files">Files</span>
+        <span class="drag" draggable="true" data-val="G‑clamp">G‑clamp</span>
+      </div>
+      <div class="row">
+        <div class="drop multiple" data-bucket="Timber"><strong>Timber</strong></div>
+        <div class="drop multiple" data-bucket="Metal"><strong>Metal</strong></div>
+        <div class="drop multiple" data-bucket="Both"><strong>Both</strong></div>
+      </div>
+    </div>
+
+    <div class="question" id="t4">
+      <h2>T4 · Memory match (pair tool ↔ function)</h2>
+      <div id="t4board" class="grid cell-6" style="max-width:520px"></div>
+      <div class="muted">Find all pairs. Score: <span id="t4score">0</span> / 4 · Moves: <span id="t4moves">0</span></div>
+    </div>
+  </section>
+
+  <!-- PROCESSES & MEASUREMENT MODULE -->
+  <section id="mProcess" class="module">
+    <div class="question" id="p1">
+      <h2>P1 · Order the steps (Timber box)</h2>
+      <ul id="p1list" class="sortable">
+        <li class="drag" draggable="true">Mark out</li>
+        <li class="drag" draggable="true">Cut to length</li>
+        <li class="drag" draggable="true">Plane/sand</li>
+        <li class="drag" draggable="true">Drill & assemble</li>
+        <li class="drag" draggable="true">Apply finish</li>
+      </ul>
+    </div>
+
+    <div class="question" id="p2">
+      <h2>P2 · Conversions (in ↔ mm)</h2>
+      <div>Inches: <input type="range" id="p2in" min="0" max="12" step="0.1" value="2.0"> <span id="p2inval">2.0</span></div>
+      <div>Millimetres: <input type="range" id="p2mm" min="0" max="305" step="1" value="51"> <span id="p2mmval">51</span></div>
+      <div style="margin-top:8px">Convert 12 mm to inches (2 dp): <input id="p2q" style="width:100px" placeholder="in"> <span id="p2fb" class="pill"></span></div>
+    </div>
+
+    <div class="question" id="p3">
+      <h2>P3 · Kerf compensation</h2>
+      <p>Saw kerf = 3 mm. Final length required = 150 mm. What length should you cut the stock to? (mm)</p>
+      <input type="number" id="p3num" placeholder="mm"> <span id="p3fb" class="pill"></span>
+      <div class="muted">Tip: Add kerf once when making a single cut to final size.</div>
+    </div>
+
+    <div class="question" id="p4">
+      <h2>P4 · Budget your setup ($40)</h2>
+      <label><input type="checkbox" class="p4" data-cost="16"> Safety glasses ($16)</label><br>
+      <label><input type="checkbox" class="p4" data-cost="22"> Ear muffs ($22)</label><br>
+      <label><input type="checkbox" class="p4" data-cost="12"> Bench vice rental ($12)</label><br>
+      <label><input type="checkbox" class="p4" data-cost="5"> Marking pencil ($5)</label>
+      <p>Total: $<span id="p4tot">0</span> <span id="p4warn" class="muted"></span></p>
+    </div>
+  </section>
+
+  <!-- MATERIALS & FINISHES MODULE -->
+  <section id="mMaterials" class="module">
+    <div class="question" id="m1">
+      <h2>M1 · Finishes (dropdown matrix)</h2>
+      <table>
+        <tr><th>Material</th><th>Best finish</th></tr>
+        <tr><td>Pine (timber)</td><td>
+          <select id="m1a"><option value="">--select--</option><option>Clear varnish</option><option>Primer + enamel</option><option>Oil blackening</option></select>
+        </td></tr>
+        <tr><td>Mild steel</td><td>
+          <select id="m1b"><option value="">--select--</option><option>Clear varnish</option><option>Primer + enamel</option><option>Oil blackening</option></select>
+        </td></tr>
+        <tr><td>Aluminium</td><td>
+          <select id="m1c"><option value="">--select--</option><option>Anodise</option><option>Primer + enamel</option><option>Raw</option></select>
+        </td></tr>
+      </table>
+    </div>
+
+    <div class="question" id="m2">
+      <h2>M2 · Joinery match (dropdowns)</h2>
+      <table>
+        <tr><th>Joint</th><th>Use/Property</th></tr>
+        <tr><td>Butt joint</td><td>
+          <select id="m2a"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option></select>
+        </td></tr>
+        <tr><td>Dovetail</td><td>
+          <select id="m2b"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option></select>
+        </td></tr>
+        <tr><td>Bolted angle</td><td>
+          <select id="m2c"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option></select>
+        </td></tr>
+      </table>
+    </div>
+
+    <div class="question" id="m3">
+      <h2>M3 · Reflection (30–60 words)</h2>
+      <p>Describe how you would safely prepare and finish a small timber and metal project.</p>
+      <textarea id="m3txt" rows="3" style="width:100%"></textarea>
+      <div class="muted">Words: <span id="m3w">0</span></div>
+    </div>
+  </section>
+
+  <div class="question">
+    <button class="btn" id="submit">Submit all answers</button>
+    <span class="muted">Open your console to copy the JSON payload.</span>
+  </div>
+</main>
+
+<script>
+/***** Module nav *****/
+(function(){
+  const nav=document.getElementById('nav');
+  nav.querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      nav.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      const t=b.dataset.target;
+      document.querySelectorAll('section.module').forEach(s=>s.classList.toggle('active', s.id===t));
+    });
+  });
+})();
+
+/***** Generic drag & drop *****/
+let dragSrc=null;
+function initDraggables(scope){
+  (scope||document).querySelectorAll('.drag').forEach(el=>{
+    el.addEventListener('dragstart',e=>{dragSrc=el; e.dataTransfer.setData('text/plain', el.dataset.val||el.textContent);});
+  });
+  (scope||document).querySelectorAll('.drop').forEach(zone=>{
+    zone.addEventListener('dragover',e=>e.preventDefault());
+    zone.addEventListener('drop',e=>{
+      e.preventDefault();
+      const txt=e.dataTransfer.getData('text/plain');
+      if(zone.classList.contains('multiple')){
+        const span=document.createElement('span');
+        span.className='item'; span.textContent=txt; zone.appendChild(span);
+      }else{
+        zone.textContent=txt;
+      }
+    });
+  });
+}
+initDraggables();
+
+/***** Sortable lists *****/
+function makeSortable(ul){
+  let dragging=null;
+  ul.querySelectorAll('.drag').forEach(li=>{
+    li.addEventListener('dragstart',e=>{dragging=li; e.dataTransfer.setData('text/plain','');});
+    li.addEventListener('dragover',e=>e.preventDefault());
+    li.addEventListener('drop',e=>{
+      e.preventDefault();
+      const list=ul; if(dragging && dragging!==li){
+        const nodes=[...list.children];
+        const a=nodes.indexOf(dragging), b=nodes.indexOf(li);
+        if(a<b) list.insertBefore(dragging, li.nextSibling); else list.insertBefore(dragging, li);
+      }
+    });
+  });
+}
+['p1list'].forEach(id=>{const el=document.getElementById(id); if(el) makeSortable(el);});
+
+/***** Safety hotspot (S4) *****/
+const s4svg=document.getElementById('s4svg');
+const s4hot=document.getElementById('s4hot');
+let s4xy=null;
+if(s4svg){
+  s4svg.addEventListener('click',e=>{
+    const rect=s4svg.getBoundingClientRect();
+    const x=e.clientX-rect.left, y=e.clientY-rect.top;
+    s4hot.style.left=(s4svg.offsetLeft+x-18)+'px';
+    s4hot.style.top=(s4svg.offsetTop+y-18)+'px';
+    s4hot.style.width='36px'; s4hot.style.height='36px'; s4hot.style.display='block';
+    s4xy={x:Math.round(x), y:Math.round(y)};
+  });
+}
+
+/***** Conversions (P2) *****/
+const p2in=document.getElementById('p2in'), p2mm=document.getElementById('p2mm');
+const p2inval=document.getElementById('p2inval'), p2mmval=document.getElementById('p2mmval');
+let p2lock=false;
+function upIn(){ if(p2lock) return; p2lock=true; const inches=parseFloat(p2in.value); p2inval.textContent=inches.toFixed(1); const mm=inches*25.4; p2mm.value=mm; p2mmval.textContent=mm.toFixed(0); p2lock=false; }
+function upMm(){ if(p2lock) return; p2lock=true; const mm=parseFloat(p2mm.value); p2mmval.textContent=mm.toFixed(0); const inches=mm/25.4; p2in.value=inches; p2inval.textContent=inches.toFixed(1); p2lock=false; }
+p2in.addEventListener('input',upIn); p2mm.addEventListener('input',upMm); upIn();
+// small quiz: 12 mm to inches
+const p2q=document.getElementById('p2q'), p2fb=document.getElementById('p2fb');
+if(p2q){
+  p2q.addEventListener('input',()=>{
+    const ans=parseFloat(p2q.value);
+    if(isNaN(ans)){p2fb.textContent=''; return;}
+    const correct=12/25.4; const ok=Math.abs(ans-correct)<=0.01;
+    p2fb.textContent = ok ? '✓' : '✗';
+    p2fb.className = 'pill ' + (ok?'right':'wrong');
+  });
+}
+
+/***** Kerf calc (P3) *****/
+const p3num=document.getElementById('p3num'), p3fb=document.getElementById('p3fb');
+if(p3num){
+  p3num.addEventListener('input',()=>{
+    const val=parseFloat(p3num.value);
+    if(isNaN(val)){p3fb.textContent=''; return;}
+    const expected=150+3; // one cut to final
+    const ok=Math.abs(val-expected)<=0.5;
+    p3fb.textContent = ok? 'Correct' : 'Check kerf once';
+    p3fb.className = 'pill ' + (ok?'right':'wrong');
+  });
+}
+
+/***** Budget (P4) *****/
+function upBudget(){
+  let tot=0; document.querySelectorAll('#p4 input.p4').forEach(cb=>{ if(cb.checked) tot+=parseFloat(cb.dataset.cost);});
+  document.getElementById('p4tot').textContent=tot.toFixed(2);
+  document.getElementById('p4warn').textContent = tot>40 ? 'Over budget!' : '';
+}
+document.querySelectorAll('#p4 input.p4').forEach(cb=>cb.addEventListener('change',upBudget)); upBudget();
+
+/***** Memory match (T4) *****/
+(function(){
+  const pairs=[
+    ['Try square','Check 90°'],
+    ['Scriber','Mark metal'],
+    ['Hacksaw','Cut metal'],
+    ['Drill press','Drill holes']
+  ];
+  const cards=[...pairs.flat()].map((text,idx)=>({text,pairIndex:Math.floor(idx/2)}));
+  // Actually build as separate pair mapping by text
+  const mapping=new Map([
+    ['Try square','Check 90°'],
+    ['Scriber','Mark metal'],
+    ['Hacksaw','Cut metal'],
+    ['Drill press','Drill holes'],
+    ['Check 90°','Try square'],
+    ['Mark metal','Scriber'],
+    ['Cut metal','Hacksaw'],
+    ['Drill holes','Drill press']
+  ]);
+  const board=document.getElementById('t4board'); if(!board) return;
+  const deck=[...mapping.keys()].map(text=>({text}));
+  // shuffle
+  for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [deck[i],deck[j]]=[deck[j],deck[i]];}
+  deck.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='cell'; d.style.display='flex'; d.style.alignItems='center'; d.style.justifyContent='center'; d.style.height='64px'; d.style.cursor='pointer';
+    d.dataset.text=c.text; d.dataset.revealed='0'; d.textContent='?';
+    board.appendChild(d);
+  });
+  let first=null, lock=false, score=0, moves=0;
+  function update(){ document.getElementById('t4score').textContent=String(score); document.getElementById('t4moves').textContent=String(moves); }
+  board.querySelectorAll('.cell').forEach(cell=>{
+    cell.addEventListener('click',()=>{
+      if(lock) return; if(cell.dataset.revealed==='1') return;
+      cell.dataset.revealed='1'; cell.textContent=cell.dataset.text; moves++; update();
+      if(!first){ first=cell; return; }
+      // check match
+      const a=first.dataset.text, b=cell.dataset.text;
+      if(mapping.get(a)===b){
+        // keep revealed
+        score++; first=null; update();
+      }else{
+        lock=true; setTimeout(()=>{
+          first.dataset.revealed='0'; first.textContent='?';
+          cell.dataset.revealed='0'; cell.textContent='?';
+          first=null; lock=false;
+        },700);
+      }
+    });
+  });
+})();
+
+/***** Word count (M3) *****/
+const m3t=document.getElementById('m3txt'), m3w=document.getElementById('m3w');
+function wc(){ const n=(m3t.value.trim().match(/\b\w+\b/g)||[]).length; m3w.textContent=n; }
+m3t.addEventListener('input',wc); wc();
+
+/***** Submit collector *****/
+document.getElementById('submit').addEventListener('click',()=>{
+  const ans={};
+  // Safety
+  ans.s1=(document.querySelector('input[name=s1]:checked')||{}).value||'';
+  ans.s2=(document.querySelector('input[name=s2]:checked')||{}).value||'';
+  ans.s3={}; document.querySelectorAll('#s3 .drop').forEach(z=>{ ans.s3[z.dataset.accept]=z.textContent.trim();});
+  ans.s4=s4xy||{};
+  ans.s5=[...document.querySelectorAll('#s5 .s5:checked')].map(cb=>cb.dataset.tag);
+  // Tools
+  ans.t1={}; document.querySelectorAll('#t1 .drop').forEach(z=>{ ans.t1[z.dataset.accept]=z.textContent.trim();});
+  ans.t2={}; document.querySelectorAll('#t2 .drop').forEach(z=>{ ans.t2[z.dataset.accept]=z.textContent.trim();});
+  ans.t3={}; document.querySelectorAll('#t3 .drop.multiple').forEach(z=>{ ans.t3[z.dataset.bucket]=[...z.querySelectorAll('.item')].map(i=>i.textContent.trim()); });
+  // Memory score
+  ans.t4={score:document.getElementById('t4score').textContent, moves:document.getElementById('t4moves').textContent};
+  // Process & measurement
+  ans.p1=[...document.querySelectorAll('#p1list .drag')].map(li=>li.textContent.trim());
+  ans.p2={in:p2in.value, mm:p2mm.value, quiz:(document.getElementById('p2q').value||'').trim()};
+  ans.p3=document.getElementById('p3num').value;
+  ans.p4={picked:[...document.querySelectorAll('#p4 input.p4:checked')].map(cb=>cb.parentNode.textContent.trim()), total:document.getElementById('p4tot').textContent};
+  // Materials
+  ans.m1={a:document.getElementById('m1a').value, b:document.getElementById('m1b').value, c:document.getElementById('m1c').value};
+  ans.m2={a:document.getElementById('m2a').value, b:document.getElementById('m2b').value, c:document.getElementById('m2c').value};
+  ans.m3={text:document.getElementById('m3txt').value.trim(), words:document.getElementById('m3w').textContent};
+
+  console.log('Collected answers:', ans);
+  alert('Answers collected. Open the console to copy the JSON.');
+});
+</script>
+</body>
+</html>
