@@ -55,6 +55,8 @@
 <div class="question" id="q1">
   <h2>1 · Multiple‑choice</h2>
   <p>What was Ben’s <em>first</em> safety mistake?</p>
+  <div class="note">Before you choose, write your reasoning (15+ words).</div>
+  <textarea id="q1why" rows="2" style="width:100%" placeholder="Explain what in the scenario tells you this was the first mistake..."></textarea>
   <label><input type="radio" name="q1" value="A"> Not wearing safety glasses and ear protection</label><br>
   <label><input type="radio" name="q1" value="B"> Forgetting to sweep the floor</label><br>
   <label><input type="radio" name="q1" value="C"> Painting without a mask</label><br>
@@ -78,6 +80,8 @@
   <label><input type="checkbox" value="Unsecured workpiece"> Unsecured workpiece</label><br>
   <label><input type="checkbox" value="Scattered tools"> Scattered tools</label><br>
   <label><input type="checkbox" value="Correct guard use"> Correct guard use</label>
+  <div class="note" style="margin-top:6px">Add one more hazard in your own words:</div>
+  <input id="q3own" style="width:100%" placeholder="Write a hazard you would look for...">
 </div>
 
 <!-- Q4: Dropdown single-select -->
@@ -201,6 +205,8 @@
     </svg>
     <div id="q14hot" class="hot"></div>
   </div>
+  <div class="note" style="margin-top:8px">Explain the hazard you clicked and what you would do about it.</div>
+  <textarea id="q14explain" rows="2" style="width:100%" placeholder="Describe the risk and your control..."></textarea>
 </div>
 
 <!-- Q15: Image label drag -->
@@ -218,10 +224,12 @@
       <rect x="220" y="60" width="60" height="20" fill="#e1bee7"/><!-- guard -->
       <rect x="150" y="150" width="20" height="20" fill="#bbdefb"/><!-- switch -->
     </svg>
-    <div class="drop" data-accept="Vice" style="position:absolute;left:60px;top:150px;width:90px">Drop: Vice</div>
-    <div class="drop" data-accept="Guard" style="position:absolute;left:230px;top:75px;width:90px">Drop: Guard</div>
-    <div class="drop" data-accept="Switch" style="position:absolute;left:150px;top:170px;width:90px">Drop: Switch</div>
+            <div class="drop" data-accept="Vice" style="position:absolute;left:60px;top:150px;width:90px">Drop here</div>
+        <div class="drop" data-accept="Guard" style="position:absolute;left:230px;top:75px;width:90px">Drop here</div>
+        <div class="drop" data-accept="Switch" style="position:absolute;left:150px;top:170px;width:90px">Drop here</div>
   </div>
+  <div class="note" style="margin-top:8px">Pick one of your labels and justify it (why is it placed there and how does it help safety?).</div>
+  <textarea id="q15explain" rows="3" style="width:100%" placeholder="Write your justification..."></textarea>
 </div>
 
 <!-- Q16: Hazard highlight tokens -->
@@ -567,6 +575,30 @@
   <div class="muted">Words: <span id="q45w">0</span></div>
 </div>
 
+<!-- Q46: Self-directed mini plan -->
+<div class="question" id="q46">
+  <h2>46 · Mini plan (self‑directed)</h2>
+  <p>Plan a safe restart for Ben (or your own project) using Plan → Do → Check → Act.</p>
+  <div><strong>Plan</strong>: <textarea id="q46plan" rows="2" style="width:100%" placeholder="Setup, PPE, tooling..."></textarea></div>
+  <div><strong>Do</strong>: <textarea id="q46do" rows="2" style="width:100%" placeholder="First actions and controls in place..."></textarea></div>
+  <div><strong>Check</strong>: <textarea id="q46check" rows="2" style="width:100%" placeholder="What will you check and how often?"></textarea></div>
+  <div><strong>Act</strong>: <textarea id="q46act" rows="2" style="width:100%" placeholder="If something’s off, what will you change?"></textarea></div>
+</div>
+
+<!-- Q47: Student‑generated question -->
+<div class="question" id="q47">
+  <h2>47 · Write your own quiz item</h2>
+  <p>Create a question about safe metal or timber work. Include a correct answer and two believable distractors.</p>
+  <input id="q47q" style="width:100%" placeholder="Your question (stem)"><br>
+  <div class="row" style="margin-top:6px">
+    <input id="q47a" class="pill" style="flex:1" placeholder="Correct answer">
+    <input id="q47d1" class="pill" style="flex:1" placeholder="Distractor 1">
+    <input id="q47d2" class="pill" style="flex:1" placeholder="Distractor 2">
+  </div>
+  <div class="note" style="margin-top:6px">Explain why your correct answer is best and why the distractors could tempt someone.</div>
+  <textarea id="q47why" rows="3" style="width:100%" placeholder="Short justification..."></textarea>
+</div>
+
 <!-- Submit -->
 <div class="question">
   <button class="btn" id="submit">Submit all answers</button>
@@ -659,9 +691,16 @@ document.querySelectorAll('#q21 input[type=checkbox]').forEach(cb=>cb.addEventLi
 /*** Adaptive hints (Q22) ***/
 const hints=['Housekeeping prevents trips.','A clear floor allows safe movement.','Tool storage avoids falling objects.'];
 let hidx=0;
+const q22txt=document.getElementById('q22txt');
+const q22hintsEl=document.getElementById('q22hints');
 document.getElementById('q22hintbtn').addEventListener('click',()=>{
+  const words=(q22txt.value.trim().match(/\b\w+\b/g)||[]).length;
+  if(words<12){
+    const n=document.createElement('div'); n.className='hint'; n.textContent='Write at least ~12 words first. Hints unlock after you try.'; q22hintsEl.appendChild(n);
+    return;
+  }
   if(hidx<hints.length){
-    const p=document.createElement('div'); p.className='hint'; p.textContent=hints[hidx++]; document.getElementById('q22hints').appendChild(p);
+    const p=document.createElement('div'); p.className='hint'; p.textContent=hints[hidx++]; q22hintsEl.appendChild(p);
   }
 });
 
@@ -747,12 +786,28 @@ document.querySelectorAll('#q42 .q42btn').forEach(btn=>{
 
 /*** Image label absolute drops (Q15) need to track positions already handled by .drop logic ***/
 
+/*** Q1 reasoning gate ***/
+(function(){
+  const q1why=document.getElementById('q1why');
+  if(!q1why) return;
+  const radios=[...document.querySelectorAll('input[name=q1]')];
+  function update(){
+    const words=q1why.value.trim().split(/\s+/).filter(Boolean).length;
+    const ok=words>=15;
+    radios.forEach(r=>r.disabled=!ok);
+  }
+  q1why.addEventListener('input',update);
+  update();
+})();
+
 /*** Build grid for answers, submit ***/
 document.getElementById('submit').addEventListener('click',()=>{
   const ans={};
   ans.q1 = (document.querySelector('input[name=q1]:checked')||{}).value||'';
+  ans.q1why = (document.getElementById('q1why')||{value:''}).value.trim();
   ans.q2 = (document.querySelector('input[name=q2]:checked')||{}).value||'';
   ans.q3 = [...document.querySelectorAll('#q3 input[type=checkbox]:checked')].map(cb=>cb.value);
+  ans.q3own = (document.getElementById('q3own')||{value:''}).value.trim();
   ans.q4 = document.getElementById('q4sel').value;
   ans.q5 = document.getElementById('q5txt').value.trim();
   ans.q6 = document.getElementById('q6num').value;
@@ -768,7 +823,9 @@ document.getElementById('submit').addEventListener('click',()=>{
   ans.q12 = [...document.querySelectorAll('#q12list .drag')].map(li=>li.textContent.trim());
   ans.q13 = [...document.querySelectorAll('#q13list .drag')].map(li=>li.textContent.trim());
   ans.q14 = q14xy || {};
+  ans.q14_explain = (document.getElementById('q14explain')||{value:''}).value.trim();
   ans.q15 = {}; document.querySelectorAll('#q15 .drop').forEach(z=>{ ans.q15[z.dataset.accept] = z.textContent.trim();});
+  ans.q15_explain = (document.getElementById('q15explain')||{value:''}).value.trim();
   ans.q16 = [...document.querySelectorAll('#q16 .selToggle.on')].map(x=>x.textContent.trim());
   ans.q17 = {s1:document.getElementById('q17s1').textContent.trim(), s2:document.getElementById('q17s2').textContent.trim(), s3:document.getElementById('q17s3').textContent.trim(), s4:document.getElementById('q17s4').textContent.trim()};
   ans.q18 = {a:(document.querySelector('input[name=q18a]:checked')||{}).value||'', c:(document.querySelector('input[name=q18c]:checked')||{}).value||''};
@@ -806,6 +863,8 @@ document.getElementById('submit').addEventListener('click',()=>{
   ans.q43 = {ppe:document.getElementById('q43a').checked, clamp:document.getElementById('q43b').checked, tidy:document.getElementById('q43c').checked};
   ans.q44 = [...document.querySelectorAll('#q44 input[type=checkbox]:checked')].map(cb=>({activity:cb.dataset.act, ppe:cb.dataset.ppe}));
   ans.q45 = {text:document.getElementById('q45txt').value.trim(), words:document.getElementById('q45w').textContent};
+  ans.q46 = {plan:(document.getElementById('q46plan')||{value:''}).value.trim(), do:(document.getElementById('q46do')||{value:''}).value.trim(), check:(document.getElementById('q46check')||{value:''}).value.trim(), act:(document.getElementById('q46act')||{value:''}).value.trim()};
+  ans.q47 = {q:(document.getElementById('q47q')||{value:''}).value.trim(), a:(document.getElementById('q47a')||{value:''}).value.trim(), d1:(document.getElementById('q47d1')||{value:''}).value.trim(), d2:(document.getElementById('q47d2')||{value:''}).value.trim(), why:(document.getElementById('q47why')||{value:''}).value.trim()};
   console.log('Collected answers:', ans);
   alert('Answers collected. Open the console to copy the JSON.');
 });
