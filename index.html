@@ -109,6 +109,8 @@
         <div id="s4hot" class="hot"></div>
       </div>
       <div class="muted">Click where you think a hazard exists.</div>
+      <div class="note" style="margin-top:8px">Explain the hazard you selected and how you would control it.</div>
+      <textarea id="s4explain" rows="2" style="width:100%" placeholder="Describe the risk and your action..."></textarea>
     </div>
 
     <div class="question" id="s5">
@@ -117,6 +119,19 @@
       <label><input type="checkbox" class="s5" data-tag="Ear muffs"> Ear muffs</label><br>
       <label><input type="checkbox" class="s5" data-tag="Face shield"> Face shield (grinding)</label><br>
       <label><input type="checkbox" class="s5" data-tag="Gloves"> Gloves (handling sheet metal)</label>
+    </div>
+
+    <div class="question" id="s6">
+      <h2>S6 · Write your own quiz item</h2>
+      <p>Create a question about workshop safety. Include a correct answer and two tempting distractors.</p>
+      <input id="s6q" style="width:100%" placeholder="Your question (stem)"><br>
+      <div class="row" style="margin-top:6px">
+        <input id="s6a" class="pill" style="flex:1" placeholder="Correct answer">
+        <input id="s6d1" class="pill" style="flex:1" placeholder="Distractor 1">
+        <input id="s6d2" class="pill" style="flex:1" placeholder="Distractor 2">
+      </div>
+      <div class="note" style="margin-top:6px">Why is your correct option best? Why might someone choose the distractors?</div>
+      <textarea id="s6why" rows="3" style="width:100%" placeholder="Short justification..."></textarea>
     </div>
   </section>
 
@@ -152,10 +167,12 @@
           <rect x="190" y="60" width="50" height="20" fill="#e1bee7"/><!-- guard -->
           <circle cx="180" cy="120" r="10" fill="#90caf9"/><!-- chuck -->
         </svg>
-        <div class="drop" data-accept="Table" style="position:absolute;left:80px;top:178px;width:120px">Drop: Table</div>
-        <div class="drop" data-accept="Guard" style="position:absolute;left:200px;top:76px;width:120px">Drop: Guard</div>
-        <div class="drop" data-accept="Chuck" style="position:absolute;left:160px;top:132px;width:120px">Drop: Chuck</div>
+        <div class="drop" data-accept="Table" style="position:absolute;left:80px;top:178px;width:120px">Drop here</div>
+        <div class="drop" data-accept="Guard" style="position:absolute;left:200px;top:76px;width:120px">Drop here</div>
+        <div class="drop" data-accept="Chuck" style="position:absolute;left:160px;top:132px;width:120px">Drop here</div>
       </div>
+      <div class="note" style="margin-top:8px">Pick one label and justify its placement and safety function.</div>
+      <textarea id="t2explain" rows="2" style="width:100%" placeholder="Explain your choice..."></textarea>
     </div>
 
     <div class="question" id="t3">
@@ -215,6 +232,14 @@
       <label><input type="checkbox" class="p4" data-cost="5"> Marking pencil ($5)</label>
       <p>Total: $<span id="p4tot">0</span> <span id="p4warn" class="muted"></span></p>
     </div>
+
+    <div class="question" id="p5">
+      <h2>P5 · Mini plan (Plan → Do → Check → Act)</h2>
+      <div><strong>Plan</strong>: <textarea id="p5plan" rows="2" style="width:100%" placeholder="Setup, PPE, tooling..."></textarea></div>
+      <div><strong>Do</strong>: <textarea id="p5do" rows="2" style="width:100%" placeholder="First actions and controls in place..."></textarea></div>
+      <div><strong>Check</strong>: <textarea id="p5check" rows="2" style="width:100%" placeholder="What will you check and how often?"></textarea></div>
+      <div><strong>Act</strong>: <textarea id="p5act" rows="2" style="width:100%" placeholder="If something’s off, what will you change?"></textarea></div>
+    </div>
   </section>
 
   <!-- MATERIALS & FINISHES MODULE -->
@@ -261,7 +286,7 @@
 
   <div class="question">
     <button class="btn" id="submit">Submit all answers</button>
-    <span class="muted">Open your console to copy the JSON payload.</span>
+    <span class="muted">Open your console to copy the JSON.</span>
   </div>
 </main>
 
@@ -441,9 +466,12 @@ document.getElementById('submit').addEventListener('click',()=>{
   ans.s3={}; document.querySelectorAll('#s3 .drop').forEach(z=>{ ans.s3[z.dataset.accept]=z.textContent.trim();});
   ans.s4=s4xy||{};
   ans.s5=[...document.querySelectorAll('#s5 .s5:checked')].map(cb=>cb.dataset.tag);
+  ans.s4_explain=(document.getElementById('s4explain')||{value:''}).value.trim();
+  ans.s6={q:(document.getElementById('s6q')||{value:''}).value.trim(), a:(document.getElementById('s6a')||{value:''}).value.trim(), d1:(document.getElementById('s6d1')||{value:''}).value.trim(), d2:(document.getElementById('s6d2')||{value:''}).value.trim(), why:(document.getElementById('s6why')||{value:''}).value.trim()};
   // Tools
   ans.t1={}; document.querySelectorAll('#t1 .drop').forEach(z=>{ ans.t1[z.dataset.accept]=z.textContent.trim();});
   ans.t2={}; document.querySelectorAll('#t2 .drop').forEach(z=>{ ans.t2[z.dataset.accept]=z.textContent.trim();});
+  ans.t2_explain=(document.getElementById('t2explain')||{value:''}).value.trim();
   ans.t3={}; document.querySelectorAll('#t3 .drop.multiple').forEach(z=>{ ans.t3[z.dataset.bucket]=[...z.querySelectorAll('.item')].map(i=>i.textContent.trim()); });
   // Memory score
   ans.t4={score:document.getElementById('t4score').textContent, moves:document.getElementById('t4moves').textContent};
@@ -452,6 +480,7 @@ document.getElementById('submit').addEventListener('click',()=>{
   ans.p2={in:p2in.value, mm:p2mm.value, quiz:(document.getElementById('p2q').value||'').trim()};
   ans.p3=document.getElementById('p3num').value;
   ans.p4={picked:[...document.querySelectorAll('#p4 input.p4:checked')].map(cb=>cb.parentNode.textContent.trim()), total:document.getElementById('p4tot').textContent};
+  ans.p5={plan:(document.getElementById('p5plan')||{value:''}).value.trim(), do:(document.getElementById('p5do')||{value:''}).value.trim(), check:(document.getElementById('p5check')||{value:''}).value.trim(), act:(document.getElementById('p5act')||{value:''}).value.trim()};
   // Materials
   ans.m1={a:document.getElementById('m1a').value, b:document.getElementById('m1b').value, c:document.getElementById('m1c').value};
   ans.m2={a:document.getElementById('m2a').value, b:document.getElementById('m2b').value, c:document.getElementById('m2c').value};
