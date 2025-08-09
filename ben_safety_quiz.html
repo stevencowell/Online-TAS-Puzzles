@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ben's Workshop Safety — Mega Interactive Quiz (40+ Types)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{--accent:#1976d2;--ok:#2e7d32;--warn:#ef6c00;--err:#c62828;--bg:#f5f7fa;}
+  *{box-sizing:border-box}
+  body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);margin:0;padding:20px;color:#222}
+  h1{margin:0 0 12px}
+  .intro{margin:10px 0 20px;padding:12px;background:#fff;border:1px solid #ccd;border-radius:6px}
+  .scenario{padding:12px;background:#fff;border:1px solid #ccd;border-radius:6px}
+  .question{background:#fff;border:1px solid #ccd;margin:12px 0;padding:16px;border-radius:6px}
+  .question h2{margin:0 0 8px;font-size:1.05rem}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  button{padding:8px 14px;border:none;border-radius:4px;font-size:1rem;cursor:pointer}
+  .btn{background:var(--accent);color:#fff}
+  .muted{color:#666;font-size:.95rem}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#e3f2fd;color:#0d47a1;margin:2px 4px}
+  .drag{display:inline-block;padding:6px 10px;margin:4px;border:1px dashed #999;border-radius:4px;background:#fafafa;cursor:move}
+  .drop{display:inline-block;min-width:140px;min-height:32px;padding:6px 10px;margin:4px;border:1px dashed #999;border-radius:4px;background:#fcfcfc}
+  .drop.multiple{min-height:54px}
+  .item{background:#e0e0e0;border-radius:4px;margin:2px 0;padding:2px 6px;display:inline-block}
+  .sortable li{padding:6px 10px;margin:4px 0;border:1px solid #999;background:#eee;cursor:move;list-style:none}
+  .grid{display:grid;gap:4px}
+  .grid.cell-5{grid-template-columns:repeat(5,1fr)}
+  .cell{height:34px;border:1px solid #999;border-radius:4px;background:#fff;cursor:pointer}
+  .cell.sel{background:#90caf9}
+  .hot{position:absolute;border:2px solid rgba(255,0,0,.6);pointer-events:none;display:none}
+  .svgbox{position:relative;display:inline-block;border:1px solid #999}
+  .barwrap{display:flex;align-items:flex-end;gap:10px;height:120px;border:1px dashed #bbb;padding:6px;margin-top:6px}
+  .bar{width:40px;background:#90caf9}
+  .stars .star{font-size:22px;cursor:pointer;color:#999}
+  .stars .star.on{color:#ff9800}
+  table{border-collapse:collapse;width:100%}
+  th,td{border:1px solid #ccd;padding:6px;text-align:center}
+  .right{color:var(--ok)} .wrong{color:var(--err)}
+  .hint{background:#fff3cd;border:1px solid #ffeeba;border-radius:4px;padding:8px;margin-top:8px}
+  .note{font-size:.9rem;color:#555}
+  @media (max-width:700px){.drop{display:block;width:100%}}
+</style>
+</head>
+<body>
+<h1>Ben’s Workshop Safety — Interactive Question Bank</h1>
+<div class="intro">
+  <p class="muted">All questions below are built from the same scenario. Submit at the bottom to collect all answers in one JSON object (see your browser console).</p>
+</div>
+<div class="scenario">
+  <strong>Scenario:</strong>
+  <p>During his first metalwork class, Ben quickly enters the workshop, excited about the hose reel holder project. Without thinking about safety rules discussed earlier, he starts cutting mild steel without wearing his safety glasses or ear protection. Additionally, he does not secure the metal properly, and halfway through cutting, the steel piece slips, narrowly missing his hand. Meanwhile, his tools are scattered around his workspace, creating potential trip hazards. The teacher immediately stops him, reminding Ben of the safety agreement he signed and highlights the multiple risks he created for himself and others in the workshop.</p>
+</div>
+
+<!-- Q1: Multiple-choice -->
+<div class="question" id="q1">
+  <h2>1 · Multiple‑choice</h2>
+  <p>What was Ben’s <em>first</em> safety mistake?</p>
+  <label><input type="radio" name="q1" value="A"> Not wearing safety glasses and ear protection</label><br>
+  <label><input type="radio" name="q1" value="B"> Forgetting to sweep the floor</label><br>
+  <label><input type="radio" name="q1" value="C"> Painting without a mask</label><br>
+  <label><input type="radio" name="q1" value="D"> Leaving the workshop</label>
+</div>
+
+<!-- Q2: True/False -->
+<div class="question" id="q2">
+  <h2>2 · True/False</h2>
+  <p>Ben secured his metal properly before cutting.</p>
+  <label><input type="radio" name="q2" value="True"> True</label>
+  <label><input type="radio" name="q2" value="False"> False</label>
+</div>
+
+<!-- Q3: Select all that apply -->
+<div class="question" id="q3">
+  <h2>3 · Select ALL that apply</h2>
+  <p>Which hazards were present at Ben’s workstation?</p>
+  <label><input type="checkbox" value="No eye protection"> No eye protection</label><br>
+  <label><input type="checkbox" value="No ear protection"> No ear protection</label><br>
+  <label><input type="checkbox" value="Unsecured workpiece"> Unsecured workpiece</label><br>
+  <label><input type="checkbox" value="Scattered tools"> Scattered tools</label><br>
+  <label><input type="checkbox" value="Correct guard use"> Correct guard use</label>
+</div>
+
+<!-- Q4: Dropdown single-select -->
+<div class="question" id="q4">
+  <h2>4 · Dropdown</h2>
+  <p>Choose the <em>best</em> immediate action when you realise you forgot PPE:</p>
+  <select id="q4sel">
+    <option value="">-- choose --</option>
+    <option>Stop work and put on PPE</option>
+    <option>Keep cutting and hurry</option>
+    <option>Ask a friend to watch</option>
+  </select>
+</div>
+
+<!-- Q5: Short answer -->
+<div class="question" id="q5">
+  <h2>5 · Short answer</h2>
+  <p>In one sentence, explain why securing the metal is critical before cutting.</p>
+  <textarea id="q5txt" rows="3" style="width:100%"></textarea>
+</div>
+
+<!-- Q6: Numeric input -->
+<div class="question" id="q6">
+  <h2>6 · Numeric</h2>
+  <p>If the recommended stand‑off distance for hands is 100&nbsp;mm, what is the <strong>minimum</strong> safe distance (mm) you should maintain?</p>
+  <input type="number" id="q6num" placeholder="mm">
+</div>
+
+<!-- Q7: Likert slider -->
+<div class="question" id="q7">
+  <h2>7 · Confidence slider</h2>
+  <p>How confident are you that you can set up a safe cutting job? <span id="q7val" class="pill">3</span> / 5</p>
+  <input type="range" id="q7rng" min="1" max="5" value="3" oninput="document.getElementById('q7val').textContent=this.value;">
+</div>
+
+<!-- Q8: Matrix (radio grid) -->
+<div class="question" id="q8">
+  <h2>8 · Self‑assessment matrix</h2>
+  <table>
+    <tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+    <tr><td>I follow PPE rules.</td>
+      <td><input type="radio" name="q8r1" value="1"></td>
+      <td><input type="radio" name="q8r1" value="2"></td>
+      <td><input type="radio" name="q8r1" value="3"></td>
+      <td><input type="radio" name="q8r1" value="4"></td>
+      <td><input type="radio" name="q8r1" value="5"></td></tr>
+    <tr><td>I keep my workspace tidy.</td>
+      <td><input type="radio" name="q8r2" value="1"></td>
+      <td><input type="radio" name="q8r2" value="2"></td>
+      <td><input type="radio" name="q8r2" value="3"></td>
+      <td><input type="radio" name="q8r2" value="4"></td>
+      <td><input type="radio" name="q8r2" value="5"></td></tr>
+  </table>
+</div>
+
+<!-- Q9: Fill-in-the-blank (text) -->
+<div class="question" id="q9">
+  <h2>9 · Fill‑in‑the‑blank</h2>
+  <p>Before cutting, always <input id="q9a" placeholder="action"> the workpiece using a <input id="q9b" placeholder="tool (e.g., vice)">.</p>
+</div>
+
+<!-- Q10: Cloze with dropdowns -->
+<div class="question" id="q10">
+  <h2>10 · Cloze with options</h2>
+  <p>Ben ignored the <select id="q10a"><option value="">--select--</option><option>workshop induction</option><option>weather report</option></select> and started cutting without <select id="q10b"><option value="">--select--</option><option>PPE</option><option>paint</option></select>.</p>
+</div>
+
+<!-- Q11: Drag-and-drop matching -->
+<div class="question" id="q11">
+  <h2>11 · Drag‑match</h2>
+  <p>Match each hazard to a suitable control.</p>
+  <div>
+    <span class="drag" draggable="true" data-val="Eye injury">Eye injury</span>
+    <span class="drag" draggable="true" data-val="Hearing damage">Hearing damage</span>
+    <span class="drag" draggable="true" data-val="Workpiece slips">Workpiece slips</span>
+    <span class="drag" draggable="true" data-val="Trip hazard">Trip hazard</span>
+  </div>
+  <div>
+    <div class="drop" data-accept="Eye injury">Wear safety glasses</div>
+    <div class="drop" data-accept="Hearing damage">Use ear protection</div>
+    <div class="drop" data-accept="Workpiece slips">Clamp in a vice</div>
+    <div class="drop" data-accept="Trip hazard">Tidy tools/floor</div>
+  </div>
+</div>
+
+<!-- Q12: Ordering -->
+<div class="question" id="q12">
+  <h2>12 · Ordering</h2>
+  <p>Drag the steps into a safe sequence.</p>
+  <ul id="q12list" class="sortable">
+    <li class="drag" draggable="true">Put on PPE</li>
+    <li class="drag" draggable="true">Clamp workpiece</li>
+    <li class="drag" draggable="true">Check cutting path</li>
+    <li class="drag" draggable="true">Begin cutting</li>
+  </ul>
+</div>
+
+<!-- Q13: Parsons problem -->
+<div class="question" id="q13">
+  <h2>13 · Parsons (pseudo‑code order)</h2>
+  <ul id="q13list" class="sortable">
+    <li class="drag" draggable="true">safety_check()</li>
+    <li class="drag" draggable="true">put_on_ppe()</li>
+    <li class="drag" draggable="true">secure_workpiece()</li>
+    <li class="drag" draggable="true">cut_material()</li>
+  </ul>
+</div>
+
+<!-- Q14: Image hotspot (SVG) -->
+<div class="question" id="q14">
+  <h2>14 · Image hotspot</h2>
+  <p>Click anywhere you see a potential hazard area.</p>
+  <div class="svgbox">
+    <svg id="q14svg" width="320" height="220">
+      <rect x="0" y="0" width="320" height="220" fill="#fafafa" />
+      <rect x="30" y="40" width="60" height="40" fill="#c8e6c9" />
+      <rect x="220" y="150" width="50" height="30" fill="#ffcdd2" />
+      <line x1="150" y1="0" x2="150" y2="220" stroke="#bbb" />
+      <text x="12" y="20" font-size="12">Bench</text>
+      <text x="210" y="140" font-size="12">Tools</text>
+    </svg>
+    <div id="q14hot" class="hot"></div>
+  </div>
+</div>
+
+<!-- Q15: Image label drag -->
+<div class="question" id="q15">
+  <h2>15 · Label the diagram</h2>
+  <div>
+    <span class="drag" draggable="true" data-val="Vice">Vice</span>
+    <span class="drag" draggable="true" data-val="Guard">Guard</span>
+    <span class="drag" draggable="true" data-val="Switch">Switch</span>
+  </div>
+  <div class="svgbox">
+    <svg width="320" height="200">
+      <rect x="0" y="0" width="320" height="200" fill="#fff"/>
+      <rect x="40" y="120" width="80" height="30" fill="#e0e0e0"/><!-- vice area -->
+      <rect x="220" y="60" width="60" height="20" fill="#e1bee7"/><!-- guard -->
+      <rect x="150" y="150" width="20" height="20" fill="#bbdefb"/><!-- switch -->
+    </svg>
+    <div class="drop" data-accept="Vice" style="position:absolute;left:60px;top:150px;width:90px">Drop: Vice</div>
+    <div class="drop" data-accept="Guard" style="position:absolute;left:230px;top:75px;width:90px">Drop: Guard</div>
+    <div class="drop" data-accept="Switch" style="position:absolute;left:150px;top:170px;width:90px">Drop: Switch</div>
+  </div>
+</div>
+
+<!-- Q16: Hazard highlight tokens -->
+<div class="question" id="q16">
+  <h2>16 · Highlight hazards</h2>
+  <div id="q16wrap">
+    <span class="pill selToggle">No glasses</span>
+    <span class="pill selToggle">No ear protection</span>
+    <span class="pill selToggle">Unclamped metal</span>
+    <span class="pill selToggle">Tidy workspace</span>
+  </div>
+</div>
+
+<!-- Q17: Timeline placement -->
+<div class="question" id="q17">
+  <h2>17 · Timeline</h2>
+  <p>Drag the items into an appropriate order (1→4).</p>
+  <div>
+    <span class="drag" draggable="true" data-val="Induction & rules">Induction & rules</span>
+    <span class="drag" draggable="true" data-val="PPE on">PPE on</span>
+    <span class="drag" draggable="true" data-val="Secure work">Secure work</span>
+    <span class="drag" draggable="true" data-val="Cut safely">Cut safely</span>
+  </div>
+  <div>
+    <div class="drop" id="q17s1">1</div>
+    <div class="drop" id="q17s2">2</div>
+    <div class="drop" id="q17s3">3</div>
+    <div class="drop" id="q17s4">4</div>
+  </div>
+</div>
+
+<!-- Q18: Confidence-based MCQ -->
+<div class="question" id="q18">
+  <h2>18 · Confidence‑based MCQ</h2>
+  <p>Which PPE protects eyes during cutting?</p>
+  <label><input type="radio" name="q18a" value="Goggles"> Goggles</label>
+  <label><input type="radio" name="q18a" value="Gloves"> Gloves</label>
+  <label><input type="radio" name="q18a" value="Apron"> Apron</label>
+  <div class="row" style="margin-top:8px">
+    <label class="pill"><input type="radio" name="q18c" value="Low"> Low confidence</label>
+    <label class="pill"><input type="radio" name="q18c" value="Medium"> Medium</label>
+    <label class="pill"><input type="radio" name="q18c" value="High"> High</label>
+  </div>
+</div>
+
+<!-- Q19: Linked unit-conversion sliders -->
+<div class="question" id="q19">
+  <h2>19 · Linked sliders (inches ↔ mm)</h2>
+  <div>Inches: <input type="range" id="q19in" min="0" max="10" step="0.1" value="2.0"> <span id="q19inval">2.0</span></div>
+  <div>Millimetres: <input type="range" id="q19mm" min="0" max="254" step="1" value="50"> <span id="q19mmval">50</span></div>
+</div>
+
+<!-- Q20: Ratio sliders -->
+<div class="question" id="q20">
+  <h2>20 · Mix ratio (Epoxy:Hardener 5:1)</h2>
+  <div>Epoxy: <input type="range" id="q20a" min="0" max="10" value="5"> <span id="q20aval">5</span></div>
+  <div>Hardener: <input type="range" id="q20b" min="0" max="10" value="1"> <span id="q20bval">1</span></div>
+</div>
+
+<!-- Q21: Budget tracker -->
+<div class="question" id="q21">
+  <h2>21 · Budget</h2>
+  <p>Select items for a safe setup (budget $50).</p>
+  <label><input type="checkbox" data-cost="18"> Safety glasses ($18)</label><br>
+  <label><input type="checkbox" data-cost="25"> Ear muffs ($25)</label><br>
+  <label><input type="checkbox" data-cost="12"> Bench vice rental ($12)</label><br>
+  <label><input type="checkbox" data-cost="6"> Broom & dustpan ($6)</label>
+  <p>Total: $<span id="q21tot">0</span> <span id="q21warn" class="muted"></span></p>
+</div>
+
+<!-- Q22: Adaptive hints -->
+<div class="question" id="q22">
+  <h2>22 · Adaptive hints</h2>
+  <p>Why is housekeeping (tool placement) part of safety?</p>
+  <textarea id="q22txt" rows="2" style="width:100%"></textarea><br>
+  <button type="button" class="btn" id="q22hintbtn">Show hint</button>
+  <div id="q22hints"></div>
+</div>
+
+<!-- Q23: Anagram builder -->
+<div class="question" id="q23">
+  <h2>23 · Anagram</h2>
+  <p>Tap letters to build a key safety word.</p>
+  <div id="q23letters">
+    <button type="button" class="pill q23l">s</button>
+    <button type="button" class="pill q23l">a</button>
+    <button type="button" class="pill q23l">f</button>
+    <button type="button" class="pill q23l">e</button>
+    <button type="button" class="pill q23l">t</button>
+    <button type="button" class="pill q23l">y</button>
+  </div>
+  <input id="q23word" readonly style="width:120px">
+  <button type="button" id="q23clear">Clear</button>
+</div>
+
+<!-- Q24: Click sequence -->
+<div class="question" id="q24">
+  <h2>24 · Click sequence</h2>
+  <p>Click the steps in the correct order (each only once):</p>
+  <div id="q24steps" class="row">
+    <button type="button" class="pill q24s" data-step="PPE">PPE on</button>
+    <button type="button" class="pill q24s" data-step="Clamp">Clamp work</button>
+    <button type="button" class="pill q24s" data-step="Check">Check path</button>
+    <button type="button" class="pill q24s" data-step="Cut">Cut</button>
+  </div>
+  <div>Chosen: <span id="q24out" class="muted"></span></div>
+</div>
+
+<!-- Q25: Grid selection -->
+<div class="question" id="q25">
+  <h2>25 · Grid (mark safe clamp points)</h2>
+  <div id="q25grid" class="grid cell-5" style="max-width:280px"></div>
+  <div class="note">Tap cells to toggle selection.</div>
+</div>
+
+<!-- Q26: Histogram builder -->
+<div class="question" id="q26">
+  <h2>26 · Histogram</h2>
+  <div class="row">
+    <div>PPE:<input type="range" min="0" max="10" value="5" id="q26r1"></div>
+    <div>Housekeeping:<input type="range" min="0" max="10" value="5" id="q26r2"></div>
+    <div>Clamping:<input type="range" min="0" max="10" value="5" id="q26r3"></div>
+    <div>Tool use:<input type="range" min="0" max="10" value="5" id="q26r4"></div>
+  </div>
+  <div class="barwrap">
+    <div class="bar" id="q26b1" style="height:50px"></div>
+    <div class="bar" id="q26b2" style="height:50px"></div>
+    <div class="bar" id="q26b3" style="height:50px"></div>
+    <div class="bar" id="q26b4" style="height:50px"></div>
+  </div>
+</div>
+
+<!-- Q27: Star rating -->
+<div class="question" id="q27">
+  <h2>27 · Star rating</h2>
+  <div>PPE knowledge: <span class="stars" data-q="q27a"></span></div>
+  <div>Machine setup: <span class="stars" data-q="q27b"></span></div>
+  <div>Housekeeping: <span class="stars" data-q="q27c"></span></div>
+</div>
+
+<!-- Q28: PPE dropdown matrix -->
+<div class="question" id="q28">
+  <h2>28 · PPE matrix (dropdown)</h2>
+  <table>
+    <tr><th>Activity</th><th>PPE</th></tr>
+    <tr><td>Cutting steel</td><td>
+      <select id="q28a"><option value="">--select--</option><option>Safety glasses</option><option>Ear muffs</option><option>Gloves</option></select>
+    </td></tr>
+    <tr><td>Grinding edges</td><td>
+      <select id="q28b"><option value="">--select--</option><option>Face shield</option><option>Ear plugs</option><option>Gloves</option></select>
+    </td></tr>
+    <tr><td>Sweeping floor</td><td>
+      <select id="q28c"><option value="">--select--</option><option>Dust mask</option><option>Knee pads</option><option>Apron</option></select>
+    </td></tr>
+  </table>
+</div>
+
+<!-- Q29: Free drawing (annotation) -->
+<div class="question" id="q29">
+  <h2>29 · Free drawing (circle hazards)</h2>
+  <canvas id="q29cv" width="320" height="180" style="border:1px solid #999;background:#fff"></canvas>
+  <div class="note">Draw on the canvas to annotate hazards you would address.</div>
+</div>
+
+<!-- Q30: Word highlight in passage -->
+<div class="question" id="q30">
+  <h2>30 · Highlight within a sentence</h2>
+  <p id="q30p">
+    <span class="hlw">Ben</span>
+    <span class="hlw">forgot</span>
+    <span class="hlw">safety</span>
+    <span class="hlw">glasses</span>
+    <span class="hlw">and</span>
+    <span class="hlw">ear</span>
+    <span class="hlw">protection</span>
+    <span class="hlw">and</span>
+    <span class="hlw">did</span>
+    <span class="hlw">not</span>
+    <span class="hlw">clamp</span>
+    <span class="hlw">his</span>
+    <span class="hlw">work</span>.
+  </p>
+</div>
+
+<!-- Q31: Card sort (multi-category) -->
+<div class="question" id="q31">
+  <h2>31 · Card sort</h2>
+  <div>
+    <span class="drag" draggable="true" data-val="Glasses">Glasses</span>
+    <span class="drag" draggable="true" data-val="Ear muffs">Ear muffs</span>
+    <span class="drag" draggable="true" data-val="Bench vice">Bench vice</span>
+    <span class="drag" draggable="true" data-val="Tool rack">Tool rack</span>
+  </div>
+  <div class="row">
+    <div class="drop multiple" data-bucket="PPE"><strong>PPE</strong></div>
+    <div class="drop multiple" data-bucket="Setup"><strong>Machine setup</strong></div>
+    <div class="drop multiple" data-bucket="Housekeeping"><strong>Housekeeping</strong></div>
+  </div>
+</div>
+
+<!-- Q32: Tier ranking lanes -->
+<div class="question" id="q32">
+  <h2>32 · Tier ranking</h2>
+  <div>
+    <span class="drag" draggable="true" data-val="Stop work immediately">Stop work immediately</span>
+    <span class="drag" draggable="true" data-val="Sign safety agreement">Sign safety agreement</span>
+    <span class="drag" draggable="true" data-val="Tidy tools">Tidy tools</span>
+    <span class="drag" draggable="true" data-val="Clamp then cut">Clamp then cut</span>
+  </div>
+  <div class="row">
+    <div class="drop multiple" data-bucket="High">High</div>
+    <div class="drop multiple" data-bucket="Medium">Medium</div>
+    <div class="drop multiple" data-bucket="Low">Low</div>
+  </div>
+</div>
+
+<!-- Q33: Multi-hotspot toggle (SVG regions) -->
+<div class="question" id="q33">
+  <h2>33 · Click named hazard zones</h2>
+  <svg id="q33svg" width="320" height="200" style="border:1px solid #999">
+    <rect x="10" y="20" width="90" height="50" fill="#fce4ec" data-tag="Loose tools"></rect>
+    <rect x="120" y="40" width="80" height="40" fill="#e8f5e9" data-tag="No clamp"></rect>
+    <rect x="220" y="120" width="80" height="50" fill="#e3f2fd" data-tag="No PPE"></rect>
+  </svg>
+  <div class="note">Click each coloured region to toggle selection.</div>
+</div>
+
+<!-- Q34: Calculated numeric with tolerance -->
+<div class="question" id="q34">
+  <h2>34 · Calculated answer (tolerance)</h2>
+  <p>Safe hand distance ≥ 100&nbsp;mm. If Ben kept his hands 97&nbsp;mm away, is that safe?</p>
+  <select id="q34sel">
+    <option value="">--select--</option>
+    <option>Yes</option><option>No</option>
+  </select>
+  <span id="q34fb" class="pill"></span>
+</div>
+
+<!-- Q35: Safety checklist -->
+<div class="question" id="q35">
+  <h2>35 · Checklist</h2>
+  <label><input type="checkbox" class="q35"> Read safety rules</label><br>
+  <label><input type="checkbox" class="q35"> Wear PPE</label><br>
+  <label><input type="checkbox" class="q35"> Secure workpiece</label><br>
+  <label><input type="checkbox" class="q35"> Keep tools tidy</label>
+</div>
+
+<!-- Q36: Assertion–Reason -->
+<div class="question" id="q36">
+  <h2>36 · Assertion–Reason</h2>
+  <p><strong>Assertion:</strong> Ben created risks for others.</p>
+  <p><strong>Reason:</strong> Tools scattered can cause trips.</p>
+  <label><input type="radio" name="q36" value="Both true & reason explains assertion"> Both true & reason explains assertion</label><br>
+  <label><input type="radio" name="q36" value="Both true but unrelated"> Both true but unrelated</label><br>
+  <label><input type="radio" name="q36" value="Assertion true, reason false"> Assertion true, reason false</label><br>
+  <label><input type="radio" name="q36" value="Assertion false, reason true"> Assertion false, reason true</label>
+</div>
+
+<!-- Q37: Tool–function dropdown match (row-wise) -->
+<div class="question" id="q37">
+  <h2>37 · Match via dropdowns</h2>
+  <table>
+    <tr><th>Tool</th><th>Function</th></tr>
+    <tr><td>Bench vice</td><td><select id="q37a"><option value="">--select--</option><option>Secure work</option><option>Protect eyes</option><option>Tidy tools</option></select></td></tr>
+    <tr><td>Safety glasses</td><td><select id="q37b"><option value="">--select--</option><option>Secure work</option><option>Protect eyes</option><option>Tidy tools</option></select></td></tr>
+    <tr><td>Tool rack</td><td><select id="q37c"><option value="">--select--</option><option>Secure work</option><option>Protect eyes</option><option>Tidy tools</option></select></td></tr>
+  </table>
+</div>
+
+<!-- Q38: Second cloze (dropdown) -->
+<div class="question" id="q38">
+  <h2>38 · Cloze (dropdown)</h2>
+  <p>Ben signed a <select id="q38a"><option value="">--select--</option><option>safety agreement</option><option>library card</option></select> promising to follow <select id="q38b"><option value="">--select--</option><option>workshop rules</option><option>fashion tips</option></select>.</p>
+</div>
+
+<!-- Q39: Radio with “Other” -->
+<div class="question" id="q39">
+  <h2>39 · MCQ with “Other”</h2>
+  <p>Which item would you add to reduce risk further?</p>
+  <label><input type="radio" name="q39" value="Face shield"> Face shield</label>
+  <label><input type="radio" name="q39" value="Push stick"> Push stick</label>
+  <label><input type="radio" name="q39" value="Other"> Other:</label>
+  <input id="q39other" placeholder="type here">
+</div>
+
+<!-- Q40: Semantic differential slider -->
+<div class="question" id="q40">
+  <h2>40 · Safety perception slider</h2>
+  <div>How safe was Ben’s behaviour? <span id="q40val" class="pill">2</span>/10</div>
+  <input type="range" id="q40rng" min="1" max="10" value="2" oninput="document.getElementById('q40val').textContent=this.value;">
+</div>
+
+<!-- Q41: Line-match (pairing without drag) -->
+<div class="question" id="q41">
+  <h2>41 · Pair by selection (line‑match lite)</h2>
+  <div class="row">
+    <select id="q41l">
+      <option>Eye injury</option><option>Trip hazard</option><option>Workpiece slips</option>
+    </select>
+    <span>↔</span>
+    <select id="q41r">
+      <option>Use ear muffs</option><option>Tidy tools</option><option>Wear goggles</option><option>Clamp work</option>
+    </select>
+    <button type="button" class="btn" id="q41add">Add Pair</button>
+  </div>
+  <div id="q41pairs" class="muted"></div>
+</div>
+
+<!-- Q42: Two-stage branching -->
+<div class="question" id="q42">
+  <h2>42 · Branching (two decisions)</h2>
+  <div id="q42stage1">
+    <p>First, Ben: <button class="pill q42btn" data-next="A">stops & puts on PPE</button> <button class="pill q42btn" data-next="B">keeps cutting</button></p>
+  </div>
+  <div id="q42stage2"></div>
+  <div id="q42out" class="note"></div>
+</div>
+
+<!-- Q43: Toggle switches (yes/no checklist) -->
+<div class="question" id="q43">
+  <h2>43 · Yes/No toggles</h2>
+  <label>Wear PPE? <input type="checkbox" id="q43a"></label><br>
+  <label>Clamp workpiece? <input type="checkbox" id="q43b"></label><br>
+  <label>Tidy workspace? <input type="checkbox" id="q43c"></label>
+</div>
+
+<!-- Q44: PPE matrix (checkbox grid) -->
+<div class="question" id="q44">
+  <h2>44 · PPE matrix (checkboxes)</h2>
+  <table>
+    <tr><th></th><th>Glasses</th><th>Ear muffs</th><th>Gloves</th></tr>
+    <tr><td>Cutting</td><td><input type="checkbox" data-act="Cutting" data-ppe="Glasses"></td><td><input type="checkbox" data-act="Cutting" data-ppe="Ear muffs"></td><td><input type="checkbox" data-act="Cutting" data-ppe="Gloves"></td></tr>
+    <tr><td>Grinding</td><td><input type="checkbox" data-act="Grinding" data-ppe="Glasses"></td><td><input type="checkbox" data-act="Grinding" data-ppe="Ear muffs"></td><td><input type="checkbox" data-act="Grinding" data-ppe="Gloves"></td></tr>
+    <tr><td>Sweeping</td><td><input type="checkbox" data-act="Sweeping" data-ppe="Glasses"></td><td><input type="checkbox" data-act="Sweeping" data-ppe="Ear muffs"></td><td><input type="checkbox" data-act="Sweeping" data-ppe="Gloves"></td></tr>
+  </table>
+</div>
+
+<!-- Q45: Open reflection with word-count -->
+<div class="question" id="q45">
+  <h2>45 · Reflection (word limit)</h2>
+  <p>In 30–60 words, describe how Ben could restart the task safely.</p>
+  <textarea id="q45txt" rows="3" style="width:100%"></textarea>
+  <div class="muted">Words: <span id="q45w">0</span></div>
+</div>
+
+<!-- Submit -->
+<div class="question">
+  <button class="btn" id="submit">Submit all answers</button>
+  <span class="muted">Open your browser console to see the JSON payload.</span>
+</div>
+
+<script>
+/*** Generic drag & drop ***/
+let dragSrc = null;
+document.querySelectorAll('.drag').forEach(el=>{
+  el.addEventListener('dragstart',e=>{dragSrc=el; e.dataTransfer.setData('text/plain', el.dataset.val||el.textContent);});
+});
+document.querySelectorAll('.drop').forEach(zone=>{
+  zone.addEventListener('dragover',e=>e.preventDefault());
+  zone.addEventListener('drop',e=>{
+    e.preventDefault();
+    const txt = e.dataTransfer.getData('text/plain');
+    if(zone.classList.contains('multiple')){
+      const span = document.createElement('span'); span.className='item'; span.textContent=txt; zone.appendChild(span);
+    }else{
+      zone.textContent = txt;
+    }
+  });
+});
+
+/*** Sortable lists ***/
+function makeSortable(ul){
+  let dragging=null;
+  ul.querySelectorAll('.drag').forEach(li=>{
+    li.addEventListener('dragstart',e=>{dragging=li; e.dataTransfer.setData('text/plain','');});
+    li.addEventListener('dragover',e=>e.preventDefault());
+    li.addEventListener('drop',e=>{
+      e.preventDefault();
+      const list=ul;
+      if(dragging && dragging!==li){
+        const nodes=[...list.children];
+        const a=nodes.indexOf(dragging), b=nodes.indexOf(li);
+        if(a<b) list.insertBefore(dragging, li.nextSibling); else list.insertBefore(dragging, li);
+      }
+    });
+  });
+}
+['q12list','q13list'].forEach(id=>{const el=document.getElementById(id); if(el) makeSortable(el);});
+
+/*** Hotspot (Q14) ***/
+const q14svg = document.getElementById('q14svg');
+const q14hot = document.getElementById('q14hot');
+let q14xy = null;
+q14svg.addEventListener('click',e=>{
+  const rect=q14svg.getBoundingClientRect();
+  const x=e.clientX-rect.left, y=e.clientY-rect.top;
+  q14hot.style.left=(q14svg.offsetLeft+x-20)+'px';
+  q14hot.style.top=(q14svg.offsetTop+y-20)+'px';
+  q14hot.style.width='40px'; q14hot.style.height='40px'; q14hot.style.display='block';
+  q14xy = {x:Math.round(x), y:Math.round(y)};
+});
+
+/*** Highlight tokens (Q16 & Q30) ***/
+document.querySelectorAll('#q16 .selToggle').forEach(el=>{
+  el.addEventListener('click',()=> el.classList.toggle('on'));
+});
+document.querySelectorAll('#q30 .hlw').forEach(el=>{
+  el.addEventListener('click',()=> el.classList.toggle('on'));
+});
+
+/*** Linked sliders (Q19) ***/
+const q19in=document.getElementById('q19in'), q19mm=document.getElementById('q19mm');
+const q19inval=document.getElementById('q19inval'), q19mmval=document.getElementById('q19mmval');
+let conv=false;
+function upIn(){ if(conv) return; conv=true; const inches=parseFloat(q19in.value); q19inval.textContent=inches.toFixed(1); const mm=inches*25.4; q19mm.value=mm; q19mmval.textContent=mm.toFixed(0); conv=false;}
+function upMm(){ if(conv) return; conv=true; const mm=parseFloat(q19mm.value); q19mmval.textContent=mm.toFixed(0); const inches=mm/25.4; q19in.value=inches; q19inval.textContent=inches.toFixed(1); conv=false;}
+q19in.addEventListener('input',upIn); q19mm.addEventListener('input',upMm); upIn();
+
+/*** Ratio sliders (Q20) ***/
+const q20a=document.getElementById('q20a'), q20b=document.getElementById('q20b');
+const q20aval=document.getElementById('q20aval'), q20bval=document.getElementById('q20bval');
+let rlock=false;
+function upA(){ if(rlock) return; rlock=true; const a=parseInt(q20a.value)||0; q20aval.textContent=a; const b=Math.max(0, Math.round(a/5)); q20b.value=b; q20bval.textContent=b; rlock=false;}
+function upB(){ if(rlock) return; rlock=true; const b=parseInt(q20b.value)||0; q20bval.textContent=b; const a=b*5; q20a.value=a; q20aval.textContent=a; rlock=false;}
+q20a.addEventListener('input',upA); q20b.addEventListener('input',upB); upA();
+
+/*** Budget (Q21) ***/
+function upBudget(){
+  let tot=0; document.querySelectorAll('#q21 input[type=checkbox]').forEach(cb=>{ if(cb.checked) tot+=parseFloat(cb.dataset.cost);});
+  document.getElementById('q21tot').textContent=tot.toFixed(2);
+  document.getElementById('q21warn').textContent = tot>50 ? 'Over budget!' : '';
+}
+document.querySelectorAll('#q21 input[type=checkbox]').forEach(cb=>cb.addEventListener('change',upBudget)); upBudget();
+
+/*** Adaptive hints (Q22) ***/
+const hints=['Housekeeping prevents trips.','A clear floor allows safe movement.','Tool storage avoids falling objects.'];
+let hidx=0;
+document.getElementById('q22hintbtn').addEventListener('click',()=>{
+  if(hidx<hints.length){
+    const p=document.createElement('div'); p.className='hint'; p.textContent=hints[hidx++]; document.getElementById('q22hints').appendChild(p);
+  }
+});
+
+/*** Anagram (Q23) ***/
+document.querySelectorAll('.q23l').forEach(b=>b.addEventListener('click',()=>{document.getElementById('q23word').value += b.textContent;}));
+document.getElementById('q23clear').addEventListener('click',()=>{document.getElementById('q23word').value = '';});
+
+/*** Click sequence (Q24) ***/
+let seq=[]; document.querySelectorAll('.q24s').forEach(b=>b.addEventListener('click',()=>{
+  const step=b.dataset.step; if(seq.includes(step)) return; seq.push(step); b.classList.add('on'); document.getElementById('q24out').textContent=seq.join(' → ');
+}));
+
+/*** Grid (Q25) ***/
+const q25g=document.getElementById('q25grid'); for(let r=0;r<5;r++){for(let c=0;c<5;c++){const d=document.createElement('div'); d.className='cell'; d.dataset.r=r; d.dataset.c=c; d.addEventListener('click',()=>d.classList.toggle('sel')); q25g.appendChild(d);}}
+
+/*** Histogram (Q26) ***/
+function upHist(){['1','2','3','4'].forEach(i=>{ const v=document.getElementById('q26r'+i).value; document.getElementById('q26b'+i).style.height=(v*10)+'px';});}
+['1','2','3','4'].forEach(i=>document.getElementById('q26r'+i).addEventListener('input',upHist)); upHist();
+
+/*** Stars (Q27) ***/
+const starState={};
+function initStars(){
+  document.querySelectorAll('.stars').forEach(sp=>{
+    const q=sp.dataset.q; starState[q]=0;
+    for(let i=1;i<=5;i++){const st=document.createElement('span'); st.className='star'; st.textContent='★'; st.dataset.v=i;
+      st.addEventListener('click',()=>{starState[q]=i; sp.querySelectorAll('.star').forEach(s=>s.classList.toggle('on', parseInt(s.dataset.v)<=i));});
+      sp.appendChild(st);
+    }
+  });
+}
+initStars();
+
+/*** Free draw (Q29) ***/
+(function(){
+  const cv=document.getElementById('q29cv'); const ctx=cv.getContext('2d'); let down=false, lx=0, ly=0;
+  cv.addEventListener('mousedown',e=>{down=true; lx=e.offsetX; ly=e.offsetY;});
+  cv.addEventListener('mousemove',e=>{if(!down) return; ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(e.offsetX,e.offsetY); ctx.strokeStyle='#000'; ctx.lineWidth=2; ctx.stroke(); lx=e.offsetX; ly=e.offsetY;});
+  ['mouseup','mouseleave'].forEach(ev=>cv.addEventListener(ev,()=>down=false));
+})();
+
+/*** Multi-hotspot (Q33) ***/
+const q33sel=new Set();
+document.getElementById('q33svg').querySelectorAll('rect').forEach(r=>{
+  r.addEventListener('click',()=>{const tag=r.dataset.tag; if(q33sel.has(tag)){q33sel.delete(tag); r.style.opacity='1';}else{q33sel.add(tag); r.style.opacity='0.6';}});
+});
+
+/*** Q34 feedback ***/
+document.getElementById('q34sel').addEventListener('change',e=>{
+  const fb=document.getElementById('q34fb'); if(e.target.value==='No'){fb.textContent='Correct: 97 mm is below the safe minimum.'; fb.className='pill right';} else if(e.target.value==='Yes'){fb.textContent='Check again: minimum is 100 mm.'; fb.className='pill wrong';} else {fb.textContent='';}
+});
+
+/*** Word count (Q45) ***/
+const q45t=document.getElementById('q45txt'), q45w=document.getElementById('q45w');
+function wc(){ const n=(q45t.value.trim().match(/\\b\\w+\\b/g)||[]).length; q45w.textContent=n; }
+q45t.addEventListener('input',wc); wc();
+
+/*** Pair add (Q41) ***/
+const pairs=[];
+document.getElementById('q41add').addEventListener('click',()=>{
+  const L=document.getElementById('q41l').value, R=document.getElementById('q41r').value;
+  pairs.push([L,R]); document.getElementById('q41pairs').textContent = JSON.stringify(pairs);
+});
+
+/*** Branching (Q42) ***/
+let branch=[''];
+document.querySelectorAll('#q42 .q42btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    branch[0]=btn.dataset.next;
+    const stage2=document.getElementById('q42stage2'); stage2.innerHTML='';
+    if(btn.dataset.next==='A'){
+      stage2.innerHTML='<p>Next, Ben: <button class="pill q42b2" data-second="Clamp">clamps work</button> <button class="pill q42b2" data-second="Ignore">ignores clamping</button></p>';
+    }else{
+      stage2.innerHTML='<p>Next, Ben: <button class="pill q42b2" data-second="Trip">trips on tools</button> <button class="pill q42b2" data-second="Lucky">gets lucky</button></p>';
+    }
+    document.querySelectorAll('.q42b2').forEach(x=>x.addEventListener('click',()=>{
+      branch[1]=x.dataset.second;
+      document.getElementById('q42out').textContent = 'Path: ' + branch.join(' → ');
+    }));
+  });
+});
+
+/*** Stars (Q27) already init ***/
+
+/*** Image label absolute drops (Q15) need to track positions already handled by .drop logic ***/
+
+/*** Build grid for answers, submit ***/
+document.getElementById('submit').addEventListener('click',()=>{
+  const ans={};
+  ans.q1 = (document.querySelector('input[name=q1]:checked')||{}).value||'';
+  ans.q2 = (document.querySelector('input[name=q2]:checked')||{}).value||'';
+  ans.q3 = [...document.querySelectorAll('#q3 input[type=checkbox]:checked')].map(cb=>cb.value);
+  ans.q4 = document.getElementById('q4sel').value;
+  ans.q5 = document.getElementById('q5txt').value.trim();
+  ans.q6 = document.getElementById('q6num').value;
+  ans.q7 = document.getElementById('q7rng').value;
+  ans.q8 = {
+    r1:(document.querySelector('input[name=q8r1]:checked')||{}).value||'',
+    r2:(document.querySelector('input[name=q8r2]:checked')||{}).value||''
+  };
+  ans.q9 = {a:document.getElementById('q9a').value.trim(), b:document.getElementById('q9b').value.trim()};
+  ans.q10 = {a:document.getElementById('q10a').value, b:document.getElementById('q10b').value};
+  // q11 matching: read each drop's text mapped to accept target
+  ans.q11 = {}; document.querySelectorAll('#q11 .drop').forEach(z=>{ ans.q11[z.dataset.accept] = z.textContent.trim(); });
+  ans.q12 = [...document.querySelectorAll('#q12list .drag')].map(li=>li.textContent.trim());
+  ans.q13 = [...document.querySelectorAll('#q13list .drag')].map(li=>li.textContent.trim());
+  ans.q14 = q14xy || {};
+  ans.q15 = {}; document.querySelectorAll('#q15 .drop').forEach(z=>{ ans.q15[z.dataset.accept] = z.textContent.trim();});
+  ans.q16 = [...document.querySelectorAll('#q16 .selToggle.on')].map(x=>x.textContent.trim());
+  ans.q17 = {s1:document.getElementById('q17s1').textContent.trim(), s2:document.getElementById('q17s2').textContent.trim(), s3:document.getElementById('q17s3').textContent.trim(), s4:document.getElementById('q17s4').textContent.trim()};
+  ans.q18 = {a:(document.querySelector('input[name=q18a]:checked')||{}).value||'', c:(document.querySelector('input[name=q18c]:checked')||{}).value||''};
+  ans.q19 = {in:q19in.value, mm:q19mm.value};
+  ans.q20 = {epoxy:q20a.value, hardener:q20b.value};
+  ans.q21 = {picked:[...document.querySelectorAll('#q21 input[type=checkbox]:checked')].map(cb=>cb.parentNode.textContent.trim()), total:document.getElementById('q21tot').textContent};
+  ans.q22 = {text:document.getElementById('q22txt').value.trim(), hints:hidx};
+  ans.q23 = document.getElementById('q23word').value;
+  ans.q24 = seq.slice();
+  ans.q25 = [...document.querySelectorAll('#q25grid .cell.sel')].map(c=>({r:c.dataset.r,c:c.dataset.c}));
+  ans.q26 = {ppe:document.getElementById('q26r1').value, house:document.getElementById('q26r2').value, clamp:document.getElementById('q26r3').value, tool:document.getElementById('q26r4').value};
+  ans.q27 = starState;
+  ans.q28 = {a:document.getElementById('q28a').value, b:document.getElementById('q28b').value, c:document.getElementById('q28c').value};
+  // q29 canvas cannot easily be serialized here; skip image data for brevity
+  ans.q30 = [...document.querySelectorAll('#q30 .hlw.on')].map(w=>w.textContent);
+  // q31 card sort: collect each bucket
+  ans.q31 = {};
+  document.querySelectorAll('#q31 .drop.multiple').forEach(z=>{
+    ans.q31[z.dataset.bucket] = [...z.querySelectorAll('.item')].map(i=>i.textContent.trim());
+  });
+  ans.q32 = {};
+  document.querySelectorAll('#q32 .drop.multiple').forEach(z=>{
+    ans.q32[z.dataset.bucket] = [...z.querySelectorAll('.item')].map(i=>i.textContent.trim());
+  });
+  ans.q33 = [...q33sel];
+  ans.q34 = document.getElementById('q34sel').value;
+  ans.q35 = [...document.querySelectorAll('#q35 .q35:checked')].length;
+  ans.q36 = (document.querySelector('input[name=q36]:checked')||{}).value||'';
+  ans.q37 = {a:document.getElementById('q37a').value, b:document.getElementById('q37b').value, c:document.getElementById('q37c').value};
+  ans.q38 = {a:document.getElementById('q38a').value, b:document.getElementById('q38b').value};
+  ans.q39 = {choice:(document.querySelector('input[name=q39]:checked')||{}).value||'', other:document.getElementById('q39other').value.trim()};
+  ans.q40 = document.getElementById('q40rng').value;
+  ans.q41 = pairs.slice();
+  ans.q42 = branch.slice();
+  ans.q43 = {ppe:document.getElementById('q43a').checked, clamp:document.getElementById('q43b').checked, tidy:document.getElementById('q43c').checked};
+  ans.q44 = [...document.querySelectorAll('#q44 input[type=checkbox]:checked')].map(cb=>({activity:cb.dataset.act, ppe:cb.dataset.ppe}));
+  ans.q45 = {text:document.getElementById('q45txt').value.trim(), words:document.getElementById('q45w').textContent};
+  console.log('Collected answers:', ans);
+  alert('Answers collected. Open the console to copy the JSON.');
+});
+</script>
+</body>
+</html>
