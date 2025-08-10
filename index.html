@@ -41,6 +41,8 @@
     .btn{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:8px 14px;cursor:pointer}
     .right{color:var(--ok)} .wrong{color:var(--err)}
     .hint{background:#fff3cd;border:1px solid #ffeeba;border-radius:4px;padding:8px;margin-top:8px}
+    .note{font-size:.9rem;color:#555}
+    .outcome{font-size:.85rem;color:#4e6f9a;margin-top:6px}
     @media (max-width:700px){.drop{display:block;width:100%}}
   </style>
 </head>
@@ -70,14 +72,48 @@
       <p>Which item MUST be worn when grinding metal?</p>
       <label><input type="radio" name="s1" value="Safety glasses"> Safety glasses</label><br>
       <label><input type="radio" name="s1" value="Apron"> Apron</label><br>
-      <label><input type="radio" name="s1" value="Paint mask"> Paint mask</label>
+      <label><input type="radio" name="s1" value="Paint mask"> Paint mask</label><br>
+      <label><input type="radio" name="s1" value="Face shield"> Face shield</label>
+      <div class="note" style="margin-top:8px">Explain your choice (why this PPE is required).</div>
+      <textarea id="s1why" rows="2" style="width:100%" placeholder="Short justification..."></textarea>
+      <div style="margin-top:6px">
+        <button type="button" class="btn" id="s1check">Check</button>
+        <span id="s1fb" class="pill"></span>
+      </div>
+      <div class="outcome">Outcome: 4.3.2 — demonstrates responsible and safe use of tools, materials and techniques</div>
     </div>
 
     <div class="question" id="s2">
-      <h2>S2 · True/False</h2>
-      <p>Leaving tools on the floor creates a trip hazard.</p>
-      <label><input type="radio" name="s2" value="True"> True</label>
-      <label><input type="radio" name="s2" value="False"> False</label>
+      <h2>S2 · Scenario: identify hazards and propose controls</h2>
+      <div class="svgbox" style="margin-bottom:8px">
+        <svg id="s2svg" width="360" height="220" aria-label="Workshop scene: bench, trailing cord, chips on floor, unguarded machine, tools on floor">
+          <rect x="0" y="0" width="360" height="220" fill="#fafafa" />
+          <rect x="20" y="160" width="160" height="18" fill="#c8e6c9"/><!-- bench -->
+          <rect x="250" y="60" width="50" height="20" fill="#e1bee7"/><!-- guard area (open) -->
+          <circle cx="240" cy="120" r="10" fill="#90caf9"/><!-- chuck -->
+          <path d="M 0 200 C 60 180, 120 220, 180 200" stroke="#9e9e9e" stroke-width="6" fill="none"/><!-- trailing cord -->
+          <circle cx="80" cy="200" r="3" fill="#bdbdbd"/>
+          <circle cx="90" cy="198" r="3" fill="#bdbdbd"/>
+          <rect x="22" y="140" width="30" height="16" fill="#ffcdd2"/><!-- tools on bench edge -->
+          <text x="18" y="156" font-size="11">Tools</text>
+          <text x="12" y="176" font-size="11">Bench</text>
+          <text x="246" y="56" font-size="11">Open guard</text>
+        </svg>
+      </div>
+      <div class="row">
+        <label><input type="checkbox" class="s2haz" value="No eye protection"> No eye protection</label>
+        <label><input type="checkbox" class="s2haz" value="Trailing cords"> Trailing cords</label>
+        <label><input type="checkbox" class="s2haz" value="Unclamped workpiece"> Unclamped workpiece</label>
+        <label><input type="checkbox" class="s2haz" value="Unguarded machine"> Unguarded machine</label>
+        <label><input type="checkbox" class="s2haz" value="Tools on floor"> Tools on floor</label>
+      </div>
+      <div class="note" style="margin-top:8px">Write one control you would apply for the hazards you selected.</div>
+      <textarea id="s2ctrl" rows="2" style="width:100%" placeholder="e.g., Clamp work in a vice, wear safety glasses, tidy floor..."></textarea>
+      <div style="margin-top:6px">
+        <button type="button" class="btn" id="s2check">Check</button>
+        <span id="s2fb" class="pill"></span>
+      </div>
+      <div class="outcome">Outcome: 4.3.2 — identifies hazards and selects appropriate risk controls</div>
     </div>
 
     <div class="question" id="s3">
@@ -94,31 +130,70 @@
         <div class="drop" data-accept="Workpiece slips">Clamp in a vice</div>
         <div class="drop" data-accept="Trip hazard">Tidy tools and floor</div>
       </div>
+      <div style="margin-top:6px">
+        <button type="button" class="btn" id="s3check">Show feedback</button>
+      </div>
+      <div id="s3fb" class="hint" style="display:none"></div>
+      <div class="outcome">Outcome: 4.3.2 — matches hazards with appropriate PPE, clamping and housekeeping controls</div>
     </div>
 
     <div class="question" id="s4">
       <h2>S4 · Image hotspot (click hazard areas)</h2>
       <div class="svgbox">
-        <svg id="s4svg" width="340" height="220">
-          <rect x="0" y="0" width="340" height="220" fill="#fafafa" />
-          <rect x="25" y="150" width="90" height="40" fill="#c8e6c9"/>
-          <rect x="230" y="60" width="70" height="30" fill="#ffcdd2"/>
+        <svg id="s4svg" width="360" height="220">
+          <rect x="0" y="0" width="360" height="220" fill="#fafafa" />
+          <rect x="25" y="150" width="140" height="40" fill="#c8e6c9"/><!-- bench -->
+          <rect x="230" y="60" width="70" height="30" fill="#ffcdd2"/><!-- loose tools -->
+          <path d="M 200 180 L 340 210" stroke="#9e9e9e" stroke-width="5"/><!-- cord -->
+          <circle cx="180" cy="120" r="10" fill="#90caf9"/><!-- chuck -->
+          <rect x="190" y="60" width="50" height="20" fill="#e1bee7"/><!-- guard -->
           <text x="20" y="146" font-size="12">Bench</text>
           <text x="226" y="56" font-size="12">Loose tools</text>
+          <text x="196" y="56" font-size="12">Guard</text>
         </svg>
         <div id="s4hot" class="hot"></div>
       </div>
       <div class="muted">Click where you think a hazard exists.</div>
-      <div class="note" style="margin-top:8px">Explain the hazard you selected and how you would control it.</div>
+      <div class="note" style="margin-top:8px">Explain the hazard you selected and how you would control it. Use the hint if you’re unsure.</div>
       <textarea id="s4explain" rows="2" style="width:100%" placeholder="Describe the risk and your action..."></textarea>
+      <div style="margin-top:6px">
+        <button type="button" class="btn" id="s4hintbtn">Show hint</button>
+        <button type="button" class="btn" id="s4modelbtn">Show model answer</button>
+      </div>
+      <div id="s4hint" class="hint" style="display:none">Look for: tools near bench edge, trailing cords, open/removed guard, chips on floor.</div>
+      <div id="s4model" class="hint" style="display:none">Example: “I clicked the open guard area. I would stop work, lower/fit the guard and clamp the work before drilling. I would also clear tools from edges to prevent drops.”</div>
+      <div class="outcome">Outcome: 4.3.2 — justifies hazard identification and proposes controls</div>
     </div>
 
     <div class="question" id="s5">
-      <h2>S5 · PPE checklist</h2>
-      <label><input type="checkbox" class="s5" data-tag="Glasses"> Safety glasses</label><br>
-      <label><input type="checkbox" class="s5" data-tag="Ear muffs"> Ear muffs</label><br>
-      <label><input type="checkbox" class="s5" data-tag="Face shield"> Face shield (grinding)</label><br>
-      <label><input type="checkbox" class="s5" data-tag="Gloves"> Gloves (handling sheet metal)</label>
+      <h2>S5 · PPE for operations</h2>
+      <table>
+        <tr><th>Operation</th><th>Glasses</th><th>Ear muffs</th><th>Face shield</th><th>Gloves</th><th>Respirator/Mask</th></tr>
+        <tr><td>Drilling</td>
+          <td><input type="checkbox" data-op="Drilling" data-ppe="Glasses" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Drilling" data-ppe="Ear muffs" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Drilling" data-ppe="Face shield" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Drilling" data-ppe="Gloves" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Drilling" data-ppe="Respirator" class="s5cell"></td></tr>
+        <tr><td>Grinding</td>
+          <td><input type="checkbox" data-op="Grinding" data-ppe="Glasses" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Grinding" data-ppe="Ear muffs" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Grinding" data-ppe="Face shield" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Grinding" data-ppe="Gloves" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Grinding" data-ppe="Respirator" class="s5cell"></td></tr>
+        <tr><td>Painting</td>
+          <td><input type="checkbox" data-op="Painting" data-ppe="Glasses" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Painting" data-ppe="Ear muffs" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Painting" data-ppe="Face shield" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Painting" data-ppe="Gloves" class="s5cell"></td>
+          <td><input type="checkbox" data-op="Painting" data-ppe="Respirator" class="s5cell"></td></tr>
+      </table>
+      <div style="margin-top:6px">
+        <button type="button" class="btn" id="s5check">Check</button>
+        <span id="s5fb" class="pill"></span>
+      </div>
+      <div class="note">Glasses protect from flying chips; earmuffs reduce loud tool noise; a face shield adds protection when grinding; respirators protect from paint fumes; gloves when handling sheet metal/chemicals.</div>
+      <div class="outcome">Outcome: 4.3.2 — selects PPE appropriate to task</div>
     </div>
 
     <div class="question" id="s6">
@@ -132,6 +207,11 @@
       </div>
       <div class="note" style="margin-top:6px">Why is your correct option best? Why might someone choose the distractors?</div>
       <textarea id="s6why" rows="3" style="width:100%" placeholder="Short justification..."></textarea>
+      <details style="margin-top:8px">
+        <summary>See examples & rubric</summary>
+        <div class="hint">Example MCQ: “Which control best prevents the workpiece moving while drilling?” A: Clamp in a vice (correct). Distractors: Push with your hand; Drill slower. Rubric: covers a real hazard, correct option clearly best, distractors plausible, explanation references safety guidance.</div>
+      </details>
+      <div class="outcome">Outcome: 4.3.2, 4.1.2 — reflects on safe practice and common misconceptions</div>
     </div>
   </section>
 
@@ -151,6 +231,9 @@
         <div class="drop" data-accept="Hacksaw">Cut metal</div>
         <div class="drop" data-accept="Drill press">Drill holes</div>
       </div>
+      <div class="note" style="margin-top:8px">Pick one matched pair and explain why the tool is suited to that function.</div>
+      <textarea id="t1why" rows="2" style="width:100%" placeholder="e.g., A try square has a fixed 90° stock and blade to check right angles..."></textarea>
+      <div class="outcome">Outcome: 4.3.2 — identifies correct tool for purpose with justification</div>
     </div>
 
     <div class="question" id="t2">
@@ -159,20 +242,41 @@
         <span class="drag" draggable="true" data-val="Guard">Guard</span>
         <span class="drag" draggable="true" data-val="Chuck">Chuck</span>
         <span class="drag" draggable="true" data-val="Table">Table</span>
+        <span class="drag" draggable="true" data-val="Switch">On/Off switch</span>
+        <span class="drag" draggable="true" data-val="Feed handle">Feed handle</span>
+        <span class="drag" draggable="true" data-val="Column">Column</span>
       </div>
       <div class="svgbox">
-        <svg width="360" height="220">
-          <rect x="0" y="0" width="360" height="220" fill="#fff"/>
-          <rect x="60" y="160" width="140" height="18" fill="#cfd8dc"/><!-- table -->
-          <rect x="190" y="60" width="50" height="20" fill="#e1bee7"/><!-- guard -->
-          <circle cx="180" cy="120" r="10" fill="#90caf9"/><!-- chuck -->
+        <svg width="380" height="230">
+          <rect x="0" y="0" width="380" height="230" fill="#fff"/>
+          <rect x="70" y="170" width="150" height="18" fill="#cfd8dc"/><!-- table -->
+          <rect x="210" y="60" width="55" height="20" fill="#e1bee7"/><!-- guard -->
+          <circle cx="200" cy="120" r="10" fill="#90caf9"/><!-- chuck -->
+          <rect x="160" y="150" width="18" height="18" fill="#bbdefb"/><!-- switch -->
+          <rect x="100" y="60" width="10" height="110" fill="#bdbdbd"/><!-- column -->
+          <line x1="230" y1="120" x2="260" y2="140" stroke="#9e9e9e" stroke-width="6"/><!-- feed handle -->
         </svg>
-        <div class="drop" data-accept="Table" style="position:absolute;left:80px;top:178px;width:120px">Drop here</div>
-        <div class="drop" data-accept="Guard" style="position:absolute;left:200px;top:76px;width:120px">Drop here</div>
-        <div class="drop" data-accept="Chuck" style="position:absolute;left:160px;top:132px;width:120px">Drop here</div>
+        <div class="drop" data-accept="Table" style="position:absolute;left:90px;top:188px;width:140px">Drop here</div>
+        <div class="drop" data-accept="Guard" style="position:absolute;left:220px;top:76px;width:120px">Drop here</div>
+        <div class="drop" data-accept="Chuck" style="position:absolute;left:180px;top:132px;width:120px">Drop here</div>
+        <div class="drop" data-accept="Switch" style="position:absolute;left:150px;top:168px;width:120px">Drop here</div>
+        <div class="drop" data-accept="Column" style="position:absolute;left:88px;top:120px;width:120px">Drop here</div>
+        <div class="drop" data-accept="Feed handle" style="position:absolute;left:250px;top:140px;width:120px">Drop here</div>
       </div>
-      <div class="note" style="margin-top:8px">Pick one label and justify its placement and safety function.</div>
+      <div class="note" style="margin-top:8px">Answer: What happens if the guard is removed?</div>
+      <select id="t2guard" style="margin-bottom:6px">
+        <option value="">-- select --</option>
+        <option>It is unsafe and not allowed; risk of chips and entanglement increases</option>
+        <option>Improves visibility so it is safer</option>
+        <option>Makes drilling faster so it is acceptable</option>
+      </select>
+      <div>
+        <button type="button" class="btn" id="t2check">Check</button>
+        <span id="t2fb" class="pill"></span>
+      </div>
+      <div class="note" style="margin-top:6px">Pick one label and justify its placement and safety function.</div>
       <textarea id="t2explain" rows="2" style="width:100%" placeholder="Explain your choice..."></textarea>
+      <div class="outcome">Outcome: 4.3.2 — identifies machine parts and explains their safety function</div>
     </div>
 
     <div class="question" id="t3">
@@ -182,18 +286,64 @@
         <span class="drag" draggable="true" data-val="Hacksaw">Hacksaw</span>
         <span class="drag" draggable="true" data-val="Files">Files</span>
         <span class="drag" draggable="true" data-val="G‑clamp">G‑clamp</span>
+        <span class="drag" draggable="true" data-val="Centre punch">Centre punch</span>
+        <span class="drag" draggable="true" data-val="Bench vice">Bench vice</span>
       </div>
       <div class="row">
         <div class="drop multiple" data-bucket="Timber"><strong>Timber</strong></div>
         <div class="drop multiple" data-bucket="Metal"><strong>Metal</strong></div>
         <div class="drop multiple" data-bucket="Both"><strong>Both</strong></div>
       </div>
+      <div class="note" style="margin-top:8px">Pick one tool you placed and justify your classification.</div>
+      <textarea id="t3why" rows="2" style="width:100%" placeholder="e.g., Files and G‑clamps are used on both materials..."></textarea>
+      <div class="outcome">Outcome: 4.3.2 — justifies material–tool suitability</div>
     </div>
 
     <div class="question" id="t4">
-      <h2>T4 · Memory match (pair tool ↔ function)</h2>
-      <div id="t4board" class="grid cell-6" style="max-width:520px"></div>
-      <div class="muted">Find all pairs. Score: <span id="t4score">0</span> / 4 · Moves: <span id="t4moves">0</span></div>
+      <h2>T4 · Choose the right tool for the job</h2>
+      <div>
+        <div style="margin-bottom:6px">Mark a line on steel sheet:
+          <select class="t4sel" data-task="Mark steel">
+            <option value="">-- select tool --</option>
+            <option>Scriber</option>
+            <option>Try square</option>
+            <option>Hacksaw</option>
+            <option>Drill press</option>
+          </select>
+        </div>
+        <div style="margin-bottom:6px">Check if an edge is 90°:
+          <select class="t4sel" data-task="Check 90">
+            <option value="">-- select tool --</option>
+            <option>Try square</option>
+            <option>Scriber</option>
+            <option>Hacksaw</option>
+            <option>Drill press</option>
+          </select>
+        </div>
+        <div style="margin-bottom:6px">Cut aluminium bar to length:
+          <select class="t4sel" data-task="Cut bar">
+            <option value="">-- select tool --</option>
+            <option>Hacksaw</option>
+            <option>Try square</option>
+            <option>Scriber</option>
+            <option>Drill press</option>
+          </select>
+        </div>
+        <div style="margin-bottom:6px">Drill a 6 mm hole:
+          <select class="t4sel" data-task="Drill hole">
+            <option value="">-- select tool --</option>
+            <option>Drill press</option>
+            <option>Hacksaw</option>
+            <option>Try square</option>
+            <option>Scriber</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <button type="button" class="btn" id="t4check">Check</button>
+        <span id="t4fb" class="pill"></span>
+      </div>
+      <div class="outcome">Outcome: 4.3.2 — selects appropriate tool for a pictured task</div>
     </div>
   </section>
 
@@ -208,6 +358,11 @@
         <li class="drag" draggable="true">Drill & assemble</li>
         <li class="drag" draggable="true">Apply finish</li>
       </ul>
+      <div style="margin-top:6px">
+        <button type="button" class="btn" id="p1show">Show correct order</button>
+      </div>
+      <div id="p1fb" class="hint" style="display:none">Correct sequence is: Mark out → Cut to length → Plane/sand → Drill & assemble → Apply finish. Finish goes last to avoid damage during machining.</div>
+      <div class="outcome">Outcome: 4.3.1 — sequences processes logically and explains why order matters</div>
     </div>
 
     <div class="question" id="p2">
@@ -215,22 +370,76 @@
       <div>Inches: <input type="range" id="p2in" min="0" max="12" step="0.1" value="2.0"> <span id="p2inval">2.0</span></div>
       <div>Millimetres: <input type="range" id="p2mm" min="0" max="305" step="1" value="51"> <span id="p2mmval">51</span></div>
       <div style="margin-top:8px">Convert 12 mm to inches (2 dp): <input id="p2q" style="width:100px" placeholder="in"> <span id="p2fb" class="pill"></span></div>
+      <div style="margin-top:6px">
+        <button type="button" class="btn" id="p2hintbtn">Show formula</button>
+      </div>
+      <div id="p2hint" class="hint" style="display:none">mm = inches × 25.4 (or inches = mm ÷ 25.4). You might need this when reading US‑sourced drawings.</div>
+      <div class="outcome">Outcome: 4.1.1 — applies metric–imperial conversion in context</div>
     </div>
 
     <div class="question" id="p3">
       <h2>P3 · Kerf compensation</h2>
+      <p><strong>Definition:</strong> Kerf is the width of material lost by the saw blade. Make cuts on the waste side and add kerf once for a single cut to final size.</p>
       <p>Saw kerf = 3 mm. Final length required = 150 mm. What length should you cut the stock to? (mm)</p>
       <input type="number" id="p3num" placeholder="mm"> <span id="p3fb" class="pill"></span>
       <div class="muted">Tip: Add kerf once when making a single cut to final size.</div>
+      <details style="margin-top:8px">
+        <summary>Stage 5 extension</summary>
+        <div>How many millimetres will be lost to kerf when cutting 4 equal pieces from one bar (3 cuts) with a 3&nbsp;mm kerf?</div>
+        <input type="number" id="p3ext" placeholder="mm"> <span id="p3extfb" class="pill"></span>
+      </details>
+      <div class="outcome">Outcome: 4.2.1 — measures and calculates allowing for kerf</div>
     </div>
 
     <div class="question" id="p4">
-      <h2>P4 · Budget your setup ($40)</h2>
-      <label><input type="checkbox" class="p4" data-cost="16"> Safety glasses ($16)</label><br>
-      <label><input type="checkbox" class="p4" data-cost="22"> Ear muffs ($22)</label><br>
-      <label><input type="checkbox" class="p4" data-cost="12"> Bench vice rental ($12)</label><br>
-      <label><input type="checkbox" class="p4" data-cost="5"> Marking pencil ($5)</label>
-      <p>Total: $<span id="p4tot">0</span> <span id="p4warn" class="muted"></span></p>
+      <h2>P4 · Cost your project choices</h2>
+      <table>
+        <tr><th>Item</th><th>Choice</th><th>Qty</th><th>Unit cost</th></tr>
+        <tr>
+          <td>Material</td>
+          <td>
+            <select id="p4mat" data-unitcost>
+              <option value="" data-cost="0">-- select --</option>
+              <option data-cost="8">Pine</option>
+              <option data-cost="12">Mild steel</option>
+              <option data-cost="15">Aluminium</option>
+            </select>
+          </td>
+          <td><input type="number" id="p4matqty" min="1" value="1" style="width:80px"></td>
+          <td id="p4matcost">$0.00</td>
+        </tr>
+        <tr>
+          <td>Fasteners</td>
+          <td>
+            <select id="p4fast" data-unitcost>
+              <option value="" data-cost="0">-- select --</option>
+              <option data-cost="3">Screws</option>
+              <option data-cost="4">Bolts</option>
+              <option data-cost="5">Rivets</option>
+            </select>
+          </td>
+          <td><input type="number" id="p4fastqty" min="0" value="0" style="width:80px"></td>
+          <td id="p4fastcost">$0.00</td>
+        </tr>
+        <tr>
+          <td>Finish</td>
+          <td>
+            <select id="p4fin" data-unitcost>
+              <option value="" data-cost="0">-- select --</option>
+              <option data-cost="6">Clear varnish</option>
+              <option data-cost="10">Primer + enamel</option>
+              <option data-cost="8">Oil blackening</option>
+              <option data-cost="12">Anodise</option>
+            </select>
+          </td>
+          <td><input type="number" id="p4finqty" min="0" value="0" style="width:80px"></td>
+          <td id="p4fincost">$0.00</td>
+        </tr>
+      </table>
+      <p>Total: $<span id="p4tot">0.00</span></p>
+      <div class="note">Justify your choices (why these materials/finish for your design and safety).</div>
+      <textarea id="p4why" rows="2" style="width:100%" placeholder="Write a short justification..."></textarea>
+      <div class="outcome">Outcome: 4.1.1, 4.3.1 — makes costed choices and justifies them</div>
     </div>
 
     <div class="question" id="p5">
@@ -239,6 +448,16 @@
       <div><strong>Do</strong>: <textarea id="p5do" rows="2" style="width:100%" placeholder="First actions and controls in place..."></textarea></div>
       <div><strong>Check</strong>: <textarea id="p5check" rows="2" style="width:100%" placeholder="What will you check and how often?"></textarea></div>
       <div><strong>Act</strong>: <textarea id="p5act" rows="2" style="width:100%" placeholder="If something’s off, what will you change?"></textarea></div>
+      <details style="margin-top:8px">
+        <summary>Prompts</summary>
+        <ul class="hint">
+          <li>PPE: glasses, ear protection, gloves when needed</li>
+          <li>Tool inspection: damage, guards, cords</li>
+          <li>Machine settings: speed, feed, clamping</li>
+          <li>Quality checks: measurements, finish, fit</li>
+        </ul>
+      </details>
+      <div class="outcome">Outcome: 4.1.2 — plans work and considers risks/quality checks</div>
     </div>
   </section>
 
@@ -258,6 +477,12 @@
           <select id="m1c"><option value="">--select--</option><option>Anodise</option><option>Primer + enamel</option><option>Raw</option></select>
         </td></tr>
       </table>
+      <div style="margin-top:6px">
+        <button type="button" class="btn" id="m1check">Check</button>
+        <span id="m1fb" class="pill"></span>
+      </div>
+      <div id="m1why" class="hint" style="display:none"></div>
+      <div class="outcome">Outcome: 4.3.1 — selects appropriate finishes and explains why</div>
     </div>
 
     <div class="question" id="m2">
@@ -265,15 +490,27 @@
       <table>
         <tr><th>Joint</th><th>Use/Property</th></tr>
         <tr><td>Butt joint</td><td>
-          <select id="m2a"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option></select>
+          <select id="m2a"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option><option>Permanent, fused</option></select>
         </td></tr>
         <tr><td>Dovetail</td><td>
-          <select id="m2b"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option></select>
+          <select id="m2b"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option><option>Permanent, fused</option></select>
         </td></tr>
         <tr><td>Bolted angle</td><td>
-          <select id="m2c"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option></select>
+          <select id="m2c"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option><option>Permanent, fused</option></select>
+        </td></tr>
+        <tr><td>Mortise‑and‑tenon</td><td>
+          <select id="m2d"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option><option>Permanent, fused</option></select>
+        </td></tr>
+        <tr><td>Lap joint</td><td>
+          <select id="m2e"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option><option>Permanent, fused</option></select>
+        </td></tr>
+        <tr><td>Welding</td><td>
+          <select id="m2f"><option value="">--select--</option><option>Simple, weak, quick</option><option>Strong, interlocking</option><option>Adjustable, mechanical</option><option>Permanent, fused</option></select>
         </td></tr>
       </table>
+      <div class="note" style="margin-top:8px">Pick one joint and explain why it suits timber or metal and the property you chose.</div>
+      <textarea id="m2why" rows="2" style="width:100%" placeholder="Short justification..."></textarea>
+      <div class="outcome">Outcome: 4.3.1 — distinguishes joint types across materials and properties</div>
     </div>
 
     <div class="question" id="m3">
@@ -281,6 +518,19 @@
       <p>Describe how you would safely prepare and finish a small timber and metal project.</p>
       <textarea id="m3txt" rows="3" style="width:100%"></textarea>
       <div class="muted">Words: <span id="m3w">0</span></div>
+      <details style="margin-top:8px">
+        <summary>Guiding questions</summary>
+        <div class="hint">
+          <ul>
+            <li>How will you clamp the workpiece?</li>
+            <li>What PPE is required for each step?</li>
+            <li>Which finish will you apply and why?</li>
+          </ul>
+        </div>
+      </details>
+      <div style="margin-top:6px"><button type="button" class="btn" id="m3modelbtn">Show model</button></div>
+      <div id="m3model" class="hint" style="display:none">Model: “I will mark out, clamp in a vice, wear safety glasses and ear protection, check machine guards and speeds, then cut and deburr. I will sand timber and apply clear varnish; for mild steel I will prime and enamel to prevent rust.”</div>
+      <div class="outcome">Outcome: 4.1.2 — reflects on safe preparation and finishing</div>
     </div>
   </section>
 
@@ -377,6 +627,9 @@ if(p2q){
     p2fb.className = 'pill ' + (ok?'right':'wrong');
   });
 }
+// P2 hint toggle
+const p2hintbtn=document.getElementById('p2hintbtn');
+if(p2hintbtn){ p2hintbtn.addEventListener('click',()=>{ const el=document.getElementById('p2hint'); el.style.display = el.style.display==='none'?'block':'none'; }); }
 
 /***** Kerf calc (P3) *****/
 const p3num=document.getElementById('p3num'), p3fb=document.getElementById('p3fb');
@@ -390,100 +643,170 @@ if(p3num){
     p3fb.className = 'pill ' + (ok?'right':'wrong');
   });
 }
-
-/***** Budget (P4) *****/
-function upBudget(){
-  let tot=0; document.querySelectorAll('#p4 input.p4').forEach(cb=>{ if(cb.checked) tot+=parseFloat(cb.dataset.cost);});
-  document.getElementById('p4tot').textContent=tot.toFixed(2);
-  document.getElementById('p4warn').textContent = tot>40 ? 'Over budget!' : '';
+// P3 extension
+const p3ext=document.getElementById('p3ext'), p3extfb=document.getElementById('p3extfb');
+if(p3ext){
+  p3ext.addEventListener('input',()=>{
+    const v=parseFloat(p3ext.value);
+    if(isNaN(v)){p3extfb.textContent=''; return;}
+    const ok = Math.abs(v-(3*3))<=0.5; // 3 cuts × 3 mm
+    p3extfb.textContent = ok? 'Correct' : 'Hint: cuts × kerf';
+    p3extfb.className = 'pill ' + (ok?'right':'wrong');
+  });
 }
-document.querySelectorAll('#p4 input.p4').forEach(cb=>cb.addEventListener('change',upBudget)); upBudget();
 
-/***** Memory match (T4) *****/
-(function(){
-  const pairs=[
-    ['Try square','Check 90°'],
-    ['Scriber','Mark metal'],
-    ['Hacksaw','Cut metal'],
-    ['Drill press','Drill holes']
-  ];
-  const cards=[...pairs.flat()].map((text,idx)=>({text,pairIndex:Math.floor(idx/2)}));
-  // Actually build as separate pair mapping by text
-  const mapping=new Map([
-    ['Try square','Check 90°'],
-    ['Scriber','Mark metal'],
-    ['Hacksaw','Cut metal'],
-    ['Drill press','Drill holes'],
-    ['Check 90°','Try square'],
-    ['Mark metal','Scriber'],
-    ['Cut metal','Hacksaw'],
-    ['Drill holes','Drill press']
-  ]);
-  const board=document.getElementById('t4board'); if(!board) return;
-  const deck=[...mapping.keys()].map(text=>({text}));
-  // shuffle
-  for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [deck[i],deck[j]]=[deck[j],deck[i]];}
-  deck.forEach((c,i)=>{
-    const d=document.createElement('div');
-    d.className='cell'; d.style.display='flex'; d.style.alignItems='center'; d.style.justifyContent='center'; d.style.height='64px'; d.style.cursor='pointer';
-    d.dataset.text=c.text; d.dataset.revealed='0'; d.textContent='?';
-    board.appendChild(d);
+/***** Safety scenario & checks (S1, S2, S3, S4, S5) *****/
+const s1check=document.getElementById('s1check');
+if(s1check){
+  s1check.addEventListener('click',()=>{
+    const choice=(document.querySelector('input[name=s1]:checked')||{}).value||'';
+    const fb=document.getElementById('s1fb');
+    if(choice==='Safety glasses'){
+      fb.textContent='Correct: Eye protection is mandatory when grinding.'; fb.className='pill right';
+    }else if(choice==='Face shield'){
+      fb.textContent='Close: Use a face shield in addition to safety glasses.'; fb.className='pill wrong';
+    }else if(choice){
+      fb.textContent='Check: Glasses protect from flying debris.'; fb.className='pill wrong';
+    }else{ fb.textContent=''; }
   });
-  let first=null, lock=false, score=0, moves=0;
-  function update(){ document.getElementById('t4score').textContent=String(score); document.getElementById('t4moves').textContent=String(moves); }
-  board.querySelectorAll('.cell').forEach(cell=>{
-    cell.addEventListener('click',()=>{
-      if(lock) return; if(cell.dataset.revealed==='1') return;
-      cell.dataset.revealed='1'; cell.textContent=cell.dataset.text; moves++; update();
-      if(!first){ first=cell; return; }
-      // check match
-      const a=first.dataset.text, b=cell.dataset.text;
-      if(mapping.get(a)===b){
-        // keep revealed
-        score++; first=null; update();
-      }else{
-        lock=true; setTimeout(()=>{
-          first.dataset.revealed='0'; first.textContent='?';
-          cell.dataset.revealed='0'; cell.textContent='?';
-          first=null; lock=false;
-        },700);
-      }
+}
+const s2check=document.getElementById('s2check');
+if(s2check){
+  s2check.addEventListener('click',()=>{
+    const picked=[...document.querySelectorAll('.s2haz:checked')].map(cb=>cb.value);
+    const must=['Trailing cords','Unguarded machine'];
+    const ok = must.every(m=>picked.includes(m));
+    const fb=document.getElementById('s2fb');
+    fb.textContent = ok? 'Good hazard spotting. Add controls in the textbox.' : 'Hint: Look for cords and guard position.';
+    fb.className='pill ' + (ok?'right':'wrong');
+  });
+}
+const s3check=document.getElementById('s3check');
+if(s3check){
+  s3check.addEventListener('click',()=>{
+    const map={
+      'Eye injury':'Wear safety glasses to protect from flying chips.',
+      'Hearing damage':'Use ear protection to reduce noise exposure.',
+      'Workpiece slips':'Clamp in a vice so the material cannot move.',
+      'Trip hazard':'Tidy tools and floor to keep walkways clear.'
+    };
+    const pairs={}; document.querySelectorAll('#s3 .drop').forEach(z=>{pairs[z.dataset.accept]=z.textContent.trim();});
+    const lines=Object.keys(map).map(k=>{
+      const ok = (pairs[k]||'').toLowerCase().includes(map[k].split(' ')[0].toLowerCase()) || (pairs[k]||'').length>0;
+      return (ok?'✓ ':'✗ ')+k+': '+map[k];
     });
+    const box=document.getElementById('s3fb'); box.innerHTML=lines.map(l=>'<div>'+l+'</div>').join(''); box.style.display='block';
   });
-})();
+}
+const s4hintbtn=document.getElementById('s4hintbtn'); if(s4hintbtn){ s4hintbtn.addEventListener('click',()=>{const el=document.getElementById('s4hint'); el.style.display= el.style.display==='none'?'block':'none';}); }
+const s4modelbtn=document.getElementById('s4modelbtn'); if(s4modelbtn){ s4modelbtn.addEventListener('click',()=>{const el=document.getElementById('s4model'); el.style.display= el.style.display==='none'?'block':'none';}); }
+const s5check=document.getElementById('s5check');
+if(s5check){
+  s5check.addEventListener('click',()=>{
+    // Expected: Drilling: Glasses (+/- Ear muffs). Grinding: Glasses + Face shield + Ear muffs. Painting: Respirator (+ Gloves)
+    function has(op,ppe){ return !!document.querySelector('#s5 input[data-op="'+op+'"][data-ppe="'+ppe+'"]:checked'); }
+    const drillOk = has('Drilling','Glasses');
+    const grindOk = has('Grinding','Glasses') && has('Grinding','Face shield') && has('Grinding','Ear muffs');
+    const paintOk = has('Painting','Respirator');
+    const fb=document.getElementById('s5fb');
+    const allOk = drillOk && grindOk && paintOk;
+    fb.textContent = allOk? 'Looks good for each operation.' : 'Hint: Glasses for drilling, add face shield + muffs for grinding, respirator for painting.';
+    fb.className='pill ' + (allOk?'right':'wrong');
+  });
+}
+
+/***** Tools extras (T2, T4) *****/
+const t2check=document.getElementById('t2check');
+if(t2check){
+  t2check.addEventListener('click',()=>{
+    const sel=document.getElementById('t2guard').value;
+    const fb=document.getElementById('t2fb');
+    if(sel.startsWith('It is unsafe')){ fb.textContent='Correct: Never remove guards; chips and entanglement risks increase.'; fb.className='pill right'; }
+    else if(sel){ fb.textContent='Check again: Guard removal is not allowed.'; fb.className='pill wrong'; }
+    else { fb.textContent=''; }
+  });
+}
+const t4check=document.getElementById('t4check');
+if(t4check){
+  t4check.addEventListener('click',()=>{
+    const ans={}; document.querySelectorAll('#t4 .t4sel').forEach(s=>{ ans[s.dataset.task]=s.value; });
+    const correct={ 'Mark steel':'Scriber', 'Check 90':'Try square', 'Cut bar':'Hacksaw', 'Drill hole':'Drill press' };
+    const ok = Object.keys(correct).every(k=>ans[k]===correct[k]);
+    const fb=document.getElementById('t4fb');
+    fb.textContent = ok? 'All correct.' : 'Check your choices (think purpose).';
+    fb.className='pill ' + (ok?'right':'wrong');
+  });
+}
+
+/***** P1 show answer *****/
+const p1show=document.getElementById('p1show'); if(p1show){ p1show.addEventListener('click',()=>{ const el=document.getElementById('p1fb'); el.style.display='block'; }); }
+
+/***** P4 costing *****/
+function updCost(){
+  function val(selId,qtyId,costId){
+    const sel=document.getElementById(selId); const opt=sel.options[sel.selectedIndex]; const unit=parseFloat(opt.dataset.cost||'0'); const qty=parseFloat(document.getElementById(qtyId).value||'0'); const cost=unit*qty; document.getElementById(costId).textContent='$'+cost.toFixed(2); return cost;
+  }
+  const tot = val('p4mat','p4matqty','p4matcost') + val('p4fast','p4fastqty','p4fastcost') + val('p4fin','p4finqty','p4fincost');
+  document.getElementById('p4tot').textContent=tot.toFixed(2);
+}
+['p4mat','p4fast','p4fin'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.addEventListener('change',updCost);} });
+['p4matqty','p4fastqty','p4finqty'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.addEventListener('input',updCost);} });
+updCost();
 
 /***** Word count (M3) *****/
 const m3t=document.getElementById('m3txt'), m3w=document.getElementById('m3w');
 function wc(){ const n=(m3t.value.trim().match(/\b\w+\b/g)||[]).length; m3w.textContent=n; }
 m3t.addEventListener('input',wc); wc();
+const m3modelbtn=document.getElementById('m3modelbtn'); if(m3modelbtn){ m3modelbtn.addEventListener('click',()=>{ const el=document.getElementById('m3model'); el.style.display = el.style.display==='none'?'block':'none'; }); }
+
+/***** Finishes check (M1) *****/
+const m1check=document.getElementById('m1check');
+if(m1check){
+  m1check.addEventListener('click',()=>{
+    const a=document.getElementById('m1a').value;
+    const b=document.getElementById('m1b').value;
+    const c=document.getElementById('m1c').value;
+    const ok = (a==='Clear varnish') && (b==='Primer + enamel') && (c==='Anodise');
+    const fb=document.getElementById('m1fb');
+    fb.textContent = ok? 'Great choices.' : 'Review: pine → clear varnish; mild steel → primer + enamel; aluminium → anodise.';
+    fb.className='pill ' + (ok?'right':'wrong');
+    const why=document.getElementById('m1why');
+    why.innerHTML='Why: varnish seals wood; primer + enamel protect steel from rust; anodising hardens aluminium surface.'; why.style.display='block';
+  });
+}
 
 /***** Submit collector *****/
 document.getElementById('submit').addEventListener('click',()=>{
   const ans={};
   // Safety
   ans.s1=(document.querySelector('input[name=s1]:checked')||{}).value||'';
-  ans.s2=(document.querySelector('input[name=s2]:checked')||{}).value||'';
+  ans.s1_why=(document.getElementById('s1why')||{value:''}).value.trim();
+  ans.s2={haz:[...document.querySelectorAll('.s2haz:checked')].map(cb=>cb.value), ctrl:(document.getElementById('s2ctrl')||{value:''}).value.trim()};
   ans.s3={}; document.querySelectorAll('#s3 .drop').forEach(z=>{ ans.s3[z.dataset.accept]=z.textContent.trim();});
   ans.s4=s4xy||{};
-  ans.s5=[...document.querySelectorAll('#s5 .s5:checked')].map(cb=>cb.dataset.tag);
+  ans.s5=[...document.querySelectorAll('#s5 .s5cell:checked')].map(cb=>({op:cb.dataset.op, ppe:cb.dataset.ppe}));
   ans.s4_explain=(document.getElementById('s4explain')||{value:''}).value.trim();
   ans.s6={q:(document.getElementById('s6q')||{value:''}).value.trim(), a:(document.getElementById('s6a')||{value:''}).value.trim(), d1:(document.getElementById('s6d1')||{value:''}).value.trim(), d2:(document.getElementById('s6d2')||{value:''}).value.trim(), why:(document.getElementById('s6why')||{value:''}).value.trim()};
   // Tools
   ans.t1={}; document.querySelectorAll('#t1 .drop').forEach(z=>{ ans.t1[z.dataset.accept]=z.textContent.trim();});
+  ans.t1_why=(document.getElementById('t1why')||{value:''}).value.trim();
   ans.t2={}; document.querySelectorAll('#t2 .drop').forEach(z=>{ ans.t2[z.dataset.accept]=z.textContent.trim();});
+  ans.t2_guard=(document.getElementById('t2guard')||{value:''}).value;
   ans.t2_explain=(document.getElementById('t2explain')||{value:''}).value.trim();
   ans.t3={}; document.querySelectorAll('#t3 .drop.multiple').forEach(z=>{ ans.t3[z.dataset.bucket]=[...z.querySelectorAll('.item')].map(i=>i.textContent.trim()); });
-  // Memory score
-  ans.t4={score:document.getElementById('t4score').textContent, moves:document.getElementById('t4moves').textContent};
+  ans.t3_why=(document.getElementById('t3why')||{value:''}).value.trim();
+  // T4 selections
+  ans.t4={}; document.querySelectorAll('#t4 .t4sel').forEach(s=>{ ans.t4[s.dataset.task]=s.value; });
   // Process & measurement
   ans.p1=[...document.querySelectorAll('#p1list .drag')].map(li=>li.textContent.trim());
   ans.p2={in:p2in.value, mm:p2mm.value, quiz:(document.getElementById('p2q').value||'').trim()};
-  ans.p3=document.getElementById('p3num').value;
-  ans.p4={picked:[...document.querySelectorAll('#p4 input.p4:checked')].map(cb=>cb.parentNode.textContent.trim()), total:document.getElementById('p4tot').textContent};
+  ans.p3=document.getElementById('p3num').value; ans.p3ext=(document.getElementById('p3ext')||{value:''}).value;
+  // Project costing
+  ans.p4={ mat:(document.getElementById('p4mat')||{}).value, matqty:(document.getElementById('p4matqty')||{value:''}).value, fast:(document.getElementById('p4fast')||{}).value, fastqty:(document.getElementById('p4fastqty')||{value:''}).value, fin:(document.getElementById('p4fin')||{}).value, finqty:(document.getElementById('p4finqty')||{value:''}).value, total:(document.getElementById('p4tot')||{}).textContent, why:(document.getElementById('p4why')||{value:''}).value.trim() };
   ans.p5={plan:(document.getElementById('p5plan')||{value:''}).value.trim(), do:(document.getElementById('p5do')||{value:''}).value.trim(), check:(document.getElementById('p5check')||{value:''}).value.trim(), act:(document.getElementById('p5act')||{value:''}).value.trim()};
   // Materials
   ans.m1={a:document.getElementById('m1a').value, b:document.getElementById('m1b').value, c:document.getElementById('m1c').value};
-  ans.m2={a:document.getElementById('m2a').value, b:document.getElementById('m2b').value, c:document.getElementById('m2c').value};
+  ans.m2={a:document.getElementById('m2a').value, b:document.getElementById('m2b').value, c:document.getElementById('m2c').value, d:(document.getElementById('m2d')||{value:''}).value, e:(document.getElementById('m2e')||{value:''}).value, f:(document.getElementById('m2f')||{value:''}).value, why:(document.getElementById('m2why')||{value:''}).value.trim()};
   ans.m3={text:document.getElementById('m3txt').value.trim(), words:document.getElementById('m3w').textContent};
 
   console.log('Collected answers:', ans);
